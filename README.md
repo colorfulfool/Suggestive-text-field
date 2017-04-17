@@ -5,5 +5,5 @@ The most basic autocomplete input on the web
 
 ## Development
 
-`blade runner` to run the tests in the browser
+`blade runner` to run the tests in the browser<br>
 `blade build` to re-compile the `dist/`
