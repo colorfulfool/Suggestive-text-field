@@ -1,3 +1,5 @@
+#= require width_of_text
+
 class @SuggestiveTextField
   constructor: (@textInput, @possibleSuggestions) ->
     @initState()
@@ -67,7 +69,7 @@ class @SuggestiveTextField
         suggestionDiv.style['background-color'] = '#FFB851' if suggestion == @selectedSuggestion()
         @suggestionsBox.appendChild suggestionDiv
       
-      @suggestionsBox.style.left = "#{@tokensWithoutOutmost().join(', ').length}ch"
+      @suggestionsBox.style.left = widthOfText @tokensWithoutOutmost().join(', '), style: @textInput
       @suggestionsBox.style.visibility = 'visible'
     else
       @suggestionsBox.style.visibility = 'hidden'

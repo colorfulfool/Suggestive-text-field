@@ -1,4 +1,33 @@
 (function() {
+  var calculateWidthForText;
+
+  this.widthOfText = function(text, options) {
+    return calculateWidthForText(text, options.style) + 'px';
+  };
+
+  calculateWidthForText = function(text, parent) {
+    var spacer;
+    if (spacer === void 0) {
+      spacer = document.createElement('span');
+      spacer.style.visibility = 'hidden';
+      spacer.style.position = 'fixed';
+      spacer.style.outline = '0';
+      spacer.style.margin = '0';
+      spacer.style.padding = '0';
+      spacer.style.border = '0';
+      spacer.style.left = '0';
+      spacer.style.whiteSpace = 'pre';
+      spacer.style.fontSize = parent.style.fontSize;
+      spacer.style.fontFamily = parent.style.fontFamily;
+      spacer.style.fontWeight = 'normal';
+      document.body.appendChild(spacer);
+    }
+    spacer.innerHTML = String(text).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return spacer.getBoundingClientRect().right;
+  };
+
+}).call(this);
+(function() {
   var cycleWithin;
 
   this.SuggestiveTextField = (function() {
@@ -88,7 +117,9 @@
           }
           this.suggestionsBox.appendChild(suggestionDiv);
         }
-        this.suggestionsBox.style.left = (this.tokensWithoutOutmost().join(', ').length) + "ch";
+        this.suggestionsBox.style.left = widthOfText(this.tokensWithoutOutmost().join(', '), {
+          style: this.textInput
+        });
         return this.suggestionsBox.style.visibility = 'visible';
       } else {
         return this.suggestionsBox.style.visibility = 'hidden';
