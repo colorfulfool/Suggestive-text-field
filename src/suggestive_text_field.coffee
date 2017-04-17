@@ -67,7 +67,7 @@ class @SuggestiveTextField
         suggestionDiv.style['background-color'] = '#FFB851' if suggestion == @selectedSuggestion()
         @suggestionsBox.appendChild suggestionDiv
       
-      @suggestionsBox.style.left = "#{@tokensWithoutOutmost().join(', ').length} ch"
+      @suggestionsBox.style.left = "#{@tokensWithoutOutmost().join(', ').length}ch"
       @suggestionsBox.style.visibility = 'visible'
     else
       @suggestionsBox.style.visibility = 'hidden'

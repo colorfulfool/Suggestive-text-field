@@ -88,7 +88,7 @@
           }
           this.suggestionsBox.appendChild(suggestionDiv);
         }
-        this.suggestionsBox.style.left = (this.tokensWithoutOutmost().join(', ').length) + " ch";
+        this.suggestionsBox.style.left = (this.tokensWithoutOutmost().join(', ').length) + "ch";
         return this.suggestionsBox.style.visibility = 'visible';
       } else {
         return this.suggestionsBox.style.visibility = 'hidden';
