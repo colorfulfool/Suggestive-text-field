@@ -78,6 +78,9 @@
       var container, outerContainer;
       this.suggestionsBox = document.createElement('div');
       this.suggestionsBox.style.position = 'absolute';
+      this.suggestionsBox.style.fontFamily = this.textInput.style.fontFamily;
+      this.suggestionsBox.style.fontSize = this.textInput.style.fontSize;
+      debugger;
       outerContainer = this.textInput.parentNode;
       container = document.createElement('div');
       container.style.position = 'relative';
@@ -104,16 +107,15 @@
     SuggestiveTextField.prototype.renderSuggestionsBox = function() {
       var i, len, ref, suggestion, suggestionDiv;
       if (this.offeredSuggestions.length > 0) {
-        console.log(this.offeredSuggestions.join(' '));
         this.suggestionsBox.innerHTML = '';
         ref = this.offeredSuggestions;
         for (i = 0, len = ref.length; i < len; i++) {
           suggestion = ref[i];
           suggestionDiv = document.createElement('div');
           suggestionDiv.innerHTML = suggestion;
-          suggestionDiv.style.padding = '1px 2px';
+          suggestionDiv.style.padding = '2px 5px';
           if (suggestion === this.selectedSuggestion()) {
-            suggestionDiv.style['background-color'] = '#FFB851';
+            suggestionDiv.style['background-color'] = '#FFB7B2';
           }
           this.suggestionsBox.appendChild(suggestionDiv);
         }

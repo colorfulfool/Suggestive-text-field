@@ -36,6 +36,8 @@ class @SuggestiveTextField
   initElements: ->
     @suggestionsBox = document.createElement('div')
     @suggestionsBox.style.position = 'absolute'
+    @suggestionsBox.style.fontFamily = @textInput.style.fontFamily
+    @suggestionsBox.style.fontSize = @textInput.style.fontSize
 
     outerContainer = @textInput.parentNode
     container = document.createElement('div')
@@ -58,15 +60,13 @@ class @SuggestiveTextField
 
   renderSuggestionsBox: ->
     if @offeredSuggestions.length > 0
-      console.log @offeredSuggestions.join(' ')
-
       @suggestionsBox.innerHTML = ''
 
       for suggestion in @offeredSuggestions
         suggestionDiv = document.createElement('div')
         suggestionDiv.innerHTML = suggestion
-        suggestionDiv.style.padding = '1px 2px'
-        suggestionDiv.style['background-color'] = '#FFB851' if suggestion == @selectedSuggestion()
+        suggestionDiv.style.padding = '2px 5px'
+        suggestionDiv.style['background-color'] = '#FFB7B2' if suggestion == @selectedSuggestion()
         @suggestionsBox.appendChild suggestionDiv
       
       @suggestionsBox.style.left = widthOfText @tokensWithoutOutmost().join(', '), style: @textInput
