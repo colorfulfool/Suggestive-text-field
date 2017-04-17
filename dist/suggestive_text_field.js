@@ -6,6 +6,7 @@
       this.textInput = textInput;
       this.possibleSuggestions = possibleSuggestions;
       this.initState();
+      this.initElements();
       this.hookUpEventHandlers();
       this.renderSuggestionsBox();
     }
@@ -22,7 +23,8 @@
 
     SuggestiveTextField.prototype.onConfirm = function() {
       this.replaceOutmostTokenWith(this.selectedSuggestion());
-      return this.offeredSuggestions = [];
+      this.offeredSuggestions = [];
+      return this.selectedSuggestionIndex = 0;
     };
 
     SuggestiveTextField.prototype.initState = function() {
@@ -31,7 +33,7 @@
     };
 
     SuggestiveTextField.prototype.matchingSuggestions = function(token) {
-      if (token.length < 2) {
+      if (token.length < 1) {
         return [];
       }
       return this.possibleSuggestions.filter(function(suggestion) {
@@ -43,20 +45,53 @@
       return this.offeredSuggestions[this.selectedSuggestionIndex];
     };
 
+    SuggestiveTextField.prototype.initElements = function() {
+      var container, outerContainer;
+      this.suggestionsBox = document.createElement('div');
+      this.suggestionsBox.style.position = 'absolute';
+      outerContainer = this.textInput.parentNode;
+      container = document.createElement('div');
+      container.style.position = 'relative';
+      container.appendChild(this.textInput);
+      container.appendChild(this.suggestionsBox);
+      return outerContainer.appendChild(container);
+    };
+
     SuggestiveTextField.prototype.outmostToken = function() {
       return this.textInput.value.split(', ').pop();
     };
 
+    SuggestiveTextField.prototype.tokensWithoutOutmost = function() {
+      return this.textInput.value.split(', ').slice(0, -1);
+    };
+
     SuggestiveTextField.prototype.replaceOutmostTokenWith = function(text) {
       var tokens;
-      tokens = this.textInput.value.split(', ').slice(0, -1);
+      tokens = this.tokensWithoutOutmost();
       tokens.push(text);
       return this.textInput.value = tokens.join(', ');
     };
 
     SuggestiveTextField.prototype.renderSuggestionsBox = function() {
+      var i, len, ref, suggestion, suggestionDiv;
       if (this.offeredSuggestions.length > 0) {
-        return console.log(this.offeredSuggestions.join(' '));
+        console.log(this.offeredSuggestions.join(' '));
+        this.suggestionsBox.innerHTML = '';
+        ref = this.offeredSuggestions;
+        for (i = 0, len = ref.length; i < len; i++) {
+          suggestion = ref[i];
+          suggestionDiv = document.createElement('div');
+          suggestionDiv.innerHTML = suggestion;
+          suggestionDiv.style.padding = '1px 2px';
+          if (suggestion === this.selectedSuggestion()) {
+            suggestionDiv.style['background-color'] = '#FFB851';
+          }
+          this.suggestionsBox.appendChild(suggestionDiv);
+        }
+        this.suggestionsBox.style.left = (this.tokensWithoutOutmost().join(', ').length) + " ch";
+        return this.suggestionsBox.style.visibility = 'visible';
+      } else {
+        return this.suggestionsBox.style.visibility = 'hidden';
       }
     };
 

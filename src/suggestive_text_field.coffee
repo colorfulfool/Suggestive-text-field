@@ -1,6 +1,7 @@
 class @SuggestiveTextField
   constructor: (@textInput, @possibleSuggestions) ->
     @initState()
+    @initElements()
     @hookUpEventHandlers()
     @renderSuggestionsBox()
 
@@ -13,6 +14,7 @@ class @SuggestiveTextField
   onConfirm: ->
     @replaceOutmostTokenWith @selectedSuggestion()
     @offeredSuggestions = []
+    @selectedSuggestionIndex = 0
 
   # logic
 
@@ -21,7 +23,7 @@ class @SuggestiveTextField
     @offeredSuggestions = []
 
   matchingSuggestions: (token) ->
-    return [] if token.length < 2
+    return [] if token.length < 1
     @possibleSuggestions.filter (suggestion) -> suggestion.startsWith(token)
 
   selectedSuggestion: ->
@@ -29,17 +31,46 @@ class @SuggestiveTextField
 
   # input/output
 
+  initElements: ->
+    @suggestionsBox = document.createElement('div')
+    @suggestionsBox.style.position = 'absolute'
+
+    outerContainer = @textInput.parentNode
+    container = document.createElement('div')
+    container.style.position = 'relative'
+
+    container.appendChild @textInput
+    container.appendChild @suggestionsBox
+    outerContainer.appendChild container
+
   outmostToken: ->
     @textInput.value.split(', ').pop()
 
+  tokensWithoutOutmost: ->
+    @textInput.value.split(', ').slice(0, -1)
+
   replaceOutmostTokenWith: (text) ->
-    tokens = @textInput.value.split(', ').slice(0, -1)
+    tokens = @tokensWithoutOutmost()
     tokens.push(text)
     @textInput.value = tokens.join(', ')
 
   renderSuggestionsBox: ->
     if @offeredSuggestions.length > 0
       console.log @offeredSuggestions.join(' ')
+
+      @suggestionsBox.innerHTML = ''
+
+      for suggestion in @offeredSuggestions
+        suggestionDiv = document.createElement('div')
+        suggestionDiv.innerHTML = suggestion
+        suggestionDiv.style.padding = '1px 2px'
+        suggestionDiv.style['background-color'] = '#FFB851' if suggestion == @selectedSuggestion()
+        @suggestionsBox.appendChild suggestionDiv
+      
+      @suggestionsBox.style.left = "#{@tokensWithoutOutmost().join(', ').length} ch"
+      @suggestionsBox.style.visibility = 'visible'
+    else
+      @suggestionsBox.style.visibility = 'hidden'
 
   # wiring
 
