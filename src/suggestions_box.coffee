@@ -6,6 +6,7 @@ class @SuggestionsBox
     @box.style.position = 'absolute'
     @box.style.fontFamily = options.styleFrom.style.fontFamily
     @box.style.fontSize = options.styleFrom.style.fontSize
+    @box.style.border = '1px solid #FFB7B2'
 
   element: ->
     @box

@@ -28,13 +28,56 @@
 
 }).call(this);
 (function() {
+  this.SuggestionsBox = (function() {
+    function SuggestionsBox(options) {
+      this.box = document.createElement('div');
+      this.box.style.position = 'absolute';
+      this.box.style.fontFamily = options.styleFrom.style.fontFamily;
+      this.box.style.fontSize = options.styleFrom.style.fontSize;
+      this.box.style.border = '1px solid #FFB7B2';
+    }
+
+    SuggestionsBox.prototype.element = function() {
+      return this.box;
+    };
+
+    SuggestionsBox.prototype.renderFor = function(context) {
+      var i, len, ref, suggestion, suggestionDiv;
+      if (context.offeredSuggestions.length > 0) {
+        this.box.innerHTML = '';
+        ref = context.offeredSuggestions;
+        for (i = 0, len = ref.length; i < len; i++) {
+          suggestion = ref[i];
+          suggestionDiv = document.createElement('div');
+          suggestionDiv.innerHTML = suggestion;
+          suggestionDiv.style.padding = '2px 5px';
+          if (suggestion === context.selectedSuggestion()) {
+            suggestionDiv.style.backgroundColor = '#FFB7B2';
+          }
+          this.box.appendChild(suggestionDiv);
+        }
+        this.box.style.left = widthOfText(context.tokensWithoutOutmost().join(', '), {
+          style: this.box
+        });
+        return this.box.style.visibility = 'visible';
+      } else {
+        return this.box.style.visibility = 'hidden';
+      }
+    };
+
+    return SuggestionsBox;
+
+  })();
+
+}).call(this);
+(function() {
   var cycleWithin;
 
   this.SuggestiveTextField = (function() {
     function SuggestiveTextField(textInput, possibleSuggestions) {
       this.textInput = textInput;
       this.possibleSuggestions = possibleSuggestions;
-      this.initState();
+      this.initInternalState();
       this.initElements();
       this.hookUpEventHandlers();
       this.renderSuggestionsBox();
@@ -56,9 +99,9 @@
       return this.selectedSuggestionIndex = 0;
     };
 
-    SuggestiveTextField.prototype.initState = function() {
-      this.selectedSuggestionIndex = 0;
-      return this.offeredSuggestions = [];
+    SuggestiveTextField.prototype.initInternalState = function() {
+      this.offeredSuggestions = [];
+      return this.selectedSuggestionIndex = 0;
     };
 
     SuggestiveTextField.prototype.matchingSuggestions = function(token) {
@@ -76,16 +119,14 @@
 
     SuggestiveTextField.prototype.initElements = function() {
       var container, outerContainer;
-      this.suggestionsBox = document.createElement('div');
-      this.suggestionsBox.style.position = 'absolute';
-      this.suggestionsBox.style.fontFamily = this.textInput.style.fontFamily;
-      this.suggestionsBox.style.fontSize = this.textInput.style.fontSize;
-      debugger;
       outerContainer = this.textInput.parentNode;
       container = document.createElement('div');
       container.style.position = 'relative';
+      this.suggestionsBox = new SuggestionsBox({
+        styleFrom: this.textInput
+      });
       container.appendChild(this.textInput);
-      container.appendChild(this.suggestionsBox);
+      container.appendChild(this.suggestionsBox.element());
       return outerContainer.appendChild(container);
     };
 
@@ -105,27 +146,7 @@
     };
 
     SuggestiveTextField.prototype.renderSuggestionsBox = function() {
-      var i, len, ref, suggestion, suggestionDiv;
-      if (this.offeredSuggestions.length > 0) {
-        this.suggestionsBox.innerHTML = '';
-        ref = this.offeredSuggestions;
-        for (i = 0, len = ref.length; i < len; i++) {
-          suggestion = ref[i];
-          suggestionDiv = document.createElement('div');
-          suggestionDiv.innerHTML = suggestion;
-          suggestionDiv.style.padding = '2px 5px';
-          if (suggestion === this.selectedSuggestion()) {
-            suggestionDiv.style['background-color'] = '#FFB7B2';
-          }
-          this.suggestionsBox.appendChild(suggestionDiv);
-        }
-        this.suggestionsBox.style.left = widthOfText(this.tokensWithoutOutmost().join(', '), {
-          style: this.textInput
-        });
-        return this.suggestionsBox.style.visibility = 'visible';
-      } else {
-        return this.suggestionsBox.style.visibility = 'hidden';
-      }
+      return this.suggestionsBox.renderFor(this);
     };
 
     SuggestiveTextField.prototype.hookUpEventHandlers = function() {
