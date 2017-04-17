@@ -1,5 +1,5 @@
-# SuggestiveTextField
-The most basic autocomplete input on the web
+# Suggestive Text Field
+The most basic autocomplete input on the web. Doesn't depend on anythig.
 
 ![Idea](http://i64.tinypic.com/rva636.png)
 
