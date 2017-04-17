@@ -1,6 +1,9 @@
 @createTextInput = ->
   input = document.createElement('input')
   input.type = 'text'
+
+  parent = document.createElement('div')
+  parent.appendChild(input)
   input
 
 @triggerEvent = (element, eventName, keyCode = undefined) ->

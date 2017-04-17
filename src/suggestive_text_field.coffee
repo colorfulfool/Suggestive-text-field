@@ -1,8 +1,8 @@
-#= require width_of_text
+#= require suggestions_box
 
 class @SuggestiveTextField
   constructor: (@textInput, @possibleSuggestions) ->
-    @initState()
+    @initInternalState()
     @initElements()
     @hookUpEventHandlers()
     @renderSuggestionsBox()
@@ -20,9 +20,9 @@ class @SuggestiveTextField
 
   # logic
 
-  initState: ->
-    @selectedSuggestionIndex = 0
+  initInternalState: ->
     @offeredSuggestions = []
+    @selectedSuggestionIndex = 0
 
   matchingSuggestions: (token) ->
     return [] if token.length < 1
@@ -34,17 +34,14 @@ class @SuggestiveTextField
   # input/output
 
   initElements: ->
-    @suggestionsBox = document.createElement('div')
-    @suggestionsBox.style.position = 'absolute'
-    @suggestionsBox.style.fontFamily = @textInput.style.fontFamily
-    @suggestionsBox.style.fontSize = @textInput.style.fontSize
-
     outerContainer = @textInput.parentNode
     container = document.createElement('div')
     container.style.position = 'relative'
 
+    @suggestionsBox = new SuggestionsBox(styleFrom: @textInput)
+
     container.appendChild @textInput
-    container.appendChild @suggestionsBox
+    container.appendChild @suggestionsBox.element()
     outerContainer.appendChild container
 
   outmostToken: ->
@@ -59,20 +56,7 @@ class @SuggestiveTextField
     @textInput.value = tokens.join(', ')
 
   renderSuggestionsBox: ->
-    if @offeredSuggestions.length > 0
-      @suggestionsBox.innerHTML = ''
-
-      for suggestion in @offeredSuggestions
-        suggestionDiv = document.createElement('div')
-        suggestionDiv.innerHTML = suggestion
-        suggestionDiv.style.padding = '2px 5px'
-        suggestionDiv.style['background-color'] = '#FFB7B2' if suggestion == @selectedSuggestion()
-        @suggestionsBox.appendChild suggestionDiv
-      
-      @suggestionsBox.style.left = widthOfText @tokensWithoutOutmost().join(', '), style: @textInput
-      @suggestionsBox.style.visibility = 'visible'
-    else
-      @suggestionsBox.style.visibility = 'hidden'
+    @suggestionsBox.renderFor(this)
 
   # wiring
 
