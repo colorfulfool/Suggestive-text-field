@@ -1,0 +1,11 @@
+load_paths:
+  - src
+  - test
+
+logical_paths:
+  - test.js
+
+build:
+  logical_paths:
+    - suggestive_text_field.js
+  path: dist
