@@ -39,7 +39,7 @@ class @SuggestiveTextField
 
   renderSuggestionsBox: ->
     if @offeredSuggestions.length > 0
-      console.log(@offeredSuggestions)
+      console.log @offeredSuggestions.join(' ')
 
   # wiring
 
@@ -49,7 +49,7 @@ class @SuggestiveTextField
       self.onType()
       self.renderSuggestionsBox()
 
-    @textInput.addEventListener 'keypress', (event) ->
+    @textInput.addEventListener 'keydown', (event) ->
       if event.which == 13 or event.which == 9 or event.which == 39
         self.onConfirm()
       else if event.which == 38 # arrow up

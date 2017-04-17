@@ -1,15 +1,17 @@
 (function() {
-  var SuggestiveTextField, cycleWithin;
+  var cycleWithin;
 
-  SuggestiveTextField = (function() {
+  this.SuggestiveTextField = (function() {
     function SuggestiveTextField(textInput, possibleSuggestions) {
       this.textInput = textInput;
       this.possibleSuggestions = possibleSuggestions;
-      hookUpEventHandlers();
+      this.initState();
+      this.hookUpEventHandlers();
+      this.renderSuggestionsBox();
     }
 
     SuggestiveTextField.prototype.onType = function() {
-      return this.offeredSuggestions = matchingSuggestions(outmostToken());
+      return this.offeredSuggestions = this.matchingSuggestions(this.outmostToken());
     };
 
     SuggestiveTextField.prototype.onArrow = function(shift) {
@@ -19,7 +21,12 @@
     };
 
     SuggestiveTextField.prototype.onConfirm = function() {
-      replaceOutmostTokenWith(selectedSuggestion());
+      this.replaceOutmostTokenWith(this.selectedSuggestion());
+      return this.offeredSuggestions = [];
+    };
+
+    SuggestiveTextField.prototype.initState = function() {
+      this.selectedSuggestionIndex = 0;
       return this.offeredSuggestions = [];
     };
 
@@ -37,33 +44,39 @@
     };
 
     SuggestiveTextField.prototype.outmostToken = function() {
-      return this.textInput.value.split(', ')[-1];
+      return this.textInput.value.split(', ').pop();
     };
 
     SuggestiveTextField.prototype.replaceOutmostTokenWith = function(text) {
-      return this.textInput.value(valueWithoutOutmost + text);
+      var tokens;
+      tokens = this.textInput.value.split(', ').slice(0, -1);
+      tokens.push(text);
+      return this.textInput.value = tokens.join(', ');
     };
 
-    SuggestiveTextField.prototype.renderSuggestionsBox = function(suggestions) {
-      var j, len, results, text;
-      resetSuggestionBox();
-      results = [];
-      for (j = 0, len = suggestions.length; j < len; j++) {
-        text = suggestions[j];
-        results.push(this.suggestionBox.insert(span(text, {
-          "class": i === this.selectedSuggestionIndex && 'selected'
-        })));
+    SuggestiveTextField.prototype.renderSuggestionsBox = function() {
+      if (this.offeredSuggestions.length > 0) {
+        return console.log(this.offeredSuggestions.join(' '));
       }
-      return results;
-    };
-
-    SuggestiveTextField.prototype.resetSuggestionBox = function() {
-      this.selectedSuggestionIndex = 0;
-      return this.suggestionBox.remove();
     };
 
     SuggestiveTextField.prototype.hookUpEventHandlers = function() {
-      return handleEvent(this.textInput, 'input', onType);
+      var self;
+      self = this;
+      this.textInput.addEventListener('input', function() {
+        self.onType();
+        return self.renderSuggestionsBox();
+      });
+      return this.textInput.addEventListener('keydown', function(event) {
+        if (event.which === 13 || event.which === 9 || event.which === 39) {
+          self.onConfirm();
+        } else if (event.which === 38) {
+          self.onArrow(-1);
+        } else if (event.which === 40) {
+          self.onArrow(1);
+        }
+        return self.renderSuggestionsBox();
+      });
     };
 
     return SuggestiveTextField;

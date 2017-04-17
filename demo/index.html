@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>Suggestive Text Field</title>
+    <meta charset="UTF-8">
+    <!-- <link rel="stylesheet" type="text/css" href="public/animatronica.css"> -->
+    <script src="../dist/suggestive_text_field.js"></script>
+  </head>
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function (argument) {
+      suggestiveField = new SuggestiveTextField(
+        document.querySelector('.suggestive'),
+        ['family', 'school', 'enterpreneurship', 'entertainment']
+      )
+    })
+  </script>
+  <body>
+    <div>
+      <input type='text' name='product[tag_list]' class='suggestive'>
+    </div>
+  </body>
+</html>

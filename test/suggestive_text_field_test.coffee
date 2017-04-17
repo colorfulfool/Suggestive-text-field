@@ -11,10 +11,10 @@ QUnit.test 'user starts with existing token', (assert) ->
   assert.deepEqual field.offeredSuggestions, ['monster', 'monstrosity', 'moonlight']
   assert.equal field.selectedSuggestion(), 'monster'
 
-  triggerEvent(textInput, 'keypress', 38) # Arrow Up
+  triggerEvent(textInput, 'keydown', 38) # Arrow Up
   assert.equal field.selectedSuggestion(), 'moonlight' # circleWithin limits:
 
-  triggerEvent(textInput, 'keypress', 13) # Enter
+  triggerEvent(textInput, 'keydown', 13) # Enter
   assert.equal textInput.value, 'moonlight'
 
 QUnit.test 'user continues with existing token', (assert) ->
@@ -24,5 +24,5 @@ QUnit.test 'user continues with existing token', (assert) ->
   assert.deepEqual field.offeredSuggestions, ['monster', 'monstrosity']
   assert.equal field.selectedSuggestion(), 'monster'
 
-  triggerEvent(textInput, 'keypress', 13) # Enter
+  triggerEvent(textInput, 'keydown', 13) # Enter
   assert.equal textInput.value, 'entrapment, monster'
