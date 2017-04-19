@@ -11,7 +11,7 @@ class @SuggestiveTextField
     @offeredSuggestions = @matchingSuggestions @outmostToken()
 
   onArrow: (shift) ->
-    @selectedSuggestionIndex = cycleWithin(@selectedSuggestionIndex + shift, limits: [0, @offeredSuggestions.length-1])
+    @selectedSuggestionIndex = cycleWithin(@selectedSuggestionIndex, shift, limits: [0, @offeredSuggestions.length-1])
 
   onConfirm: ->
     @replaceOutmostTokenWith @selectedSuggestion()
@@ -76,8 +76,9 @@ class @SuggestiveTextField
       self.renderSuggestionsBox()
 
 
-cycleWithin = (attemptedValue, options) ->
+cycleWithin = (initialValue, shift, options) ->
   [min, max] = options.limits
+  attemptedValue = initialValue + shift
   if attemptedValue > max
     min
   else if attemptedValue < min

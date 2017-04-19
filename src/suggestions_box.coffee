@@ -8,9 +8,6 @@ class @SuggestionsBox
     @box.style.fontSize = options.styleFrom.style.fontSize
     @box.style.border = '1px solid #FFB7B2'
 
-  element: ->
-    @box
-
   renderFor: (context) ->
     if context.offeredSuggestions.length > 0
       @box.innerHTML = ''
@@ -24,7 +21,10 @@ class @SuggestionsBox
           suggestionDiv.style.backgroundColor = '#FFB7B2'
         @box.appendChild suggestionDiv
       
-      @box.style.left = widthOfText context.tokensWithoutOutmost().join(', '), style: @box
+      @box.style.left = widthOfText(context.tokensWithoutOutmost().join(', '), style: @box)
       @box.style.visibility = 'visible'
     else
       @box.style.visibility = 'hidden'
+
+  element: ->
+    @box
