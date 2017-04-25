@@ -29,6 +29,3 @@ class @SuggestionsBox
       suggestionDiv.style.backgroundColor = '#FFB7B2'
 
     suggestionDiv
-
-  element: ->
-    @container
