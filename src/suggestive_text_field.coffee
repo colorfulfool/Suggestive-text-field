@@ -38,7 +38,7 @@ class @SuggestiveTextField
     container = document.createElement('div')
     container.style.position = 'relative'
 
-    @suggestionsBox = new SuggestionsBox(this, styleFrom: @textInput)
+    @suggestionsBox = new SuggestionsBox(styleFrom: @textInput)
 
     container.appendChild @textInput
     container.appendChild @suggestionsBox.element()
@@ -56,7 +56,7 @@ class @SuggestiveTextField
     @textInput.value = tokens.join(', ')
 
   renderSuggestionsBox: ->
-    @suggestionsBox.render()
+    @suggestionsBox.renderFor(this)
 
   # wiring
 

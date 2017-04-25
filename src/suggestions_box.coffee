@@ -1,14 +1,14 @@
 #= require width_of_text
 
 class @SuggestionsBox
-  constructor: (@context, options) ->
+  constructor: (options) ->
     @container = document.createElement('div')
     @container.style.position = 'absolute'
     @container.style.fontFamily = options.styleFrom.style.fontFamily
     @container.style.fontSize = options.styleFrom.style.fontSize
     @container.style.border = '1px solid #FFB7B2'
 
-  render: ->
+  renderFor: (@context) ->
     if @context.offeredSuggestions.length > 0
       @container.innerHTML = ''
 
