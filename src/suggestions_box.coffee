@@ -1,30 +1,34 @@
 #= require width_of_text
 
 class @SuggestionsBox
-  constructor: (options) ->
-    @box = document.createElement('div')
-    @box.style.position = 'absolute'
-    @box.style.fontFamily = options.styleFrom.style.fontFamily
-    @box.style.fontSize = options.styleFrom.style.fontSize
-    @box.style.border = '1px solid #FFB7B2'
+  constructor: (@context, options) ->
+    @container = document.createElement('div')
+    @container.style.position = 'absolute'
+    @container.style.fontFamily = options.styleFrom.style.fontFamily
+    @container.style.fontSize = options.styleFrom.style.fontSize
+    @container.style.border = '1px solid #FFB7B2'
 
-  renderFor: (context) ->
-    if context.offeredSuggestions.length > 0
-      @box.innerHTML = ''
+  render: ->
+    if @context.offeredSuggestions.length > 0
+      @container.innerHTML = ''
 
-      for suggestion in context.offeredSuggestions
-        suggestionDiv = document.createElement('div')
-        suggestionDiv.innerHTML = suggestion
-        suggestionDiv.style.padding = '2px 5px'
-        
-        if suggestion == context.selectedSuggestion()
-          suggestionDiv.style.backgroundColor = '#FFB7B2'
-        @box.appendChild suggestionDiv
+      for suggestion in @context.offeredSuggestions
+        @container.appendChild @renderSuggestion(suggestion)
       
-      @box.style.left = widthOfText(context.tokensWithoutOutmost().join(', '), style: @box)
-      @box.style.visibility = 'visible'
+      @container.style.left = widthOfText(@context.tokensWithoutOutmost().join(', '), style: @container)
+      @container.style.visibility = 'visible'
     else
-      @box.style.visibility = 'hidden'
+      @container.style.visibility = 'hidden'
+
+  renderSuggestion: (text) ->
+    suggestionDiv = document.createElement('div')
+    suggestionDiv.innerHTML = text
+    suggestionDiv.style.padding = '2px 5px'
+    
+    if text == @context.selectedSuggestion()
+      suggestionDiv.style.backgroundColor = '#FFB7B2'
+
+    suggestionDiv
 
   element: ->
-    @box
+    @container
