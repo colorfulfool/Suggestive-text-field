@@ -81,7 +81,6 @@
       this.container.style.fontFamily = options.styleFrom.style.fontFamily;
       this.container.style.fontSize = options.styleFrom.style.fontSize;
       this.container.style.border = '1px solid #FFB7B2';
-      this.initEventHandler();
     }
 
     SuggestionsBox.prototype.renderFor = function(context) {
@@ -113,15 +112,6 @@
         suggestionDiv.style.backgroundColor = '#FFB7B2';
       }
       return suggestionDiv;
-    };
-
-    SuggestionsBox.prototype.initEventHandler = function() {
-      var suggestionsBox;
-      suggestionsBox = this;
-      return this.container.delegateEventListener('click', '.suggestion', function(event) {
-        suggestionsBox.context.forceSelectSuggestion(this.text);
-        return suggestionsBox.context.onConfirm();
-      });
     };
 
     return SuggestionsBox;
@@ -176,7 +166,7 @@
       return this.offeredSuggestions[this.selectedSuggestionIndex];
     };
 
-    SuggestiveTextField.prototype.forceSelectSuggestion = function(text) {
+    SuggestiveTextField.prototype.selectSuggestionByText = function(text) {
       return this.selectedSuggestionIndex = this.possibleSuggestions.indexOf(text);
     };
 

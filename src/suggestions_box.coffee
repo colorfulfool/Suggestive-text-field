@@ -9,8 +9,6 @@ class @SuggestionsBox
     @container.style.fontSize = options.styleFrom.style.fontSize
     @container.style.border = '1px solid #FFB7B2'
 
-    @initEventHandler()
-
   renderFor: (@context) ->
     if @context.offeredSuggestions.length > 0
       @container.innerHTML = ''
@@ -33,9 +31,3 @@ class @SuggestionsBox
       suggestionDiv.style.backgroundColor = '#FFB7B2'
 
     suggestionDiv
-
-  initEventHandler: ->
-    suggestionsBox = this
-    @container.delegateEventListener 'click', '.suggestion', (event) ->
-      suggestionsBox.context.forceSelectSuggestion this.text
-      suggestionsBox.context.onConfirm()

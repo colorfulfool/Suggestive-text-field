@@ -12,11 +12,3 @@ QUnit.test 'renders suggestions', (assert) ->
 
   assert.deepEqual field.offeredSuggestions, ['monster', 'monstrosity']
   assert.equal suggestionsBox.container.querySelectorAll('.suggestion').length, field.offeredSuggestions.length
-
-QUnit.test 'suggestion selected with mouse', (assert) ->
-  textInput.value = 'entrapment, mon'
-  triggerEvent(textInput, 'input')
-  assert.deepEqual field.offeredSuggestions, ['monster', 'monstrosity']
-
-  triggerEvent(suggestionsBox.container.querySelectorAll('.suggestion')[1], 'click') # 'monstrosity'
-  assert.equal textInput.value, 'entrapment, monstrosity'

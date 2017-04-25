@@ -31,7 +31,7 @@ class @SuggestiveTextField
   selectedSuggestion: ->
     @offeredSuggestions[@selectedSuggestionIndex]
 
-  forceSelectSuggestion: (text) ->
+  selectSuggestionByText: (text) ->
     @selectedSuggestionIndex = @possibleSuggestions.indexOf(text)
 
   # input/output
