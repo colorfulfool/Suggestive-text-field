@@ -1,4 +1,5 @@
 #= require width_of_text
+#= require delegate_event_handler
 
 class @SuggestionsBox
   constructor: (options) ->
@@ -7,6 +8,8 @@ class @SuggestionsBox
     @container.style.fontFamily = options.styleFrom.style.fontFamily
     @container.style.fontSize = options.styleFrom.style.fontSize
     @container.style.border = '1px solid #FFB7B2'
+
+    @initEventHandler()
 
   renderFor: (@context) ->
     if @context.offeredSuggestions.length > 0
@@ -22,6 +25,7 @@ class @SuggestionsBox
 
   renderSuggestion: (text) ->
     suggestionDiv = document.createElement('div')
+    suggestionDiv.className = 'suggestion'
     suggestionDiv.innerHTML = text
     suggestionDiv.style.padding = '2px 5px'
     
@@ -29,3 +33,9 @@ class @SuggestionsBox
       suggestionDiv.style.backgroundColor = '#FFB7B2'
 
     suggestionDiv
+
+  initEventHandler: ->
+    suggestionsBox = this
+    @container.delegateEventListener 'click', '.suggestion', (event) ->
+      suggestionsBox.context.forceSelectSuggestion this.text
+      suggestionsBox.context.onConfirm()

@@ -4,7 +4,7 @@ class @SuggestiveTextField
   constructor: (@textInput, @possibleSuggestions) ->
     @initInternalState()
     @initElements()
-    @hookUpEventHandlers()
+    @initEventHandlers()
     @renderSuggestionsBox()
 
   onType: ->
@@ -30,6 +30,9 @@ class @SuggestiveTextField
 
   selectedSuggestion: ->
     @offeredSuggestions[@selectedSuggestionIndex]
+
+  forceSelectSuggestion: (text) ->
+    @selectedSuggestionIndex = @possibleSuggestions.indexOf(text)
 
   # input/output
 
@@ -60,7 +63,7 @@ class @SuggestiveTextField
 
   # wiring
 
-  hookUpEventHandlers: ->
+  initEventHandlers: ->
     self = @
     @textInput.addEventListener 'input', -> 
       self.onType()

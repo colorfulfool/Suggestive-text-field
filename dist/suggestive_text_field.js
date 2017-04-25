@@ -27,6 +27,52 @@
   };
 
 }).call(this);
+(function(document, EventTarget) {
+  var elementProto = window.Element.prototype,
+      matchesFn = elementProto.matches;
+
+  /* Check various vendor-prefixed versions of Element.matches */
+  if(!matchesFn) {
+    ['webkit', 'ms', 'moz'].some(function(prefix) {
+      var prefixedFn = prefix + 'MatchesSelector';
+      if(elementProto.hasOwnProperty(prefixedFn)) {
+        matchesFn = elementProto[prefixedFn];
+        return true;
+      }
+    });
+  }
+
+  /* Traverse DOM from event target up to parent, searching for selector */
+  function passedThrough(event, selector, stopAt) {
+    var currentNode = event.target;
+
+    while(true) {
+      if(matchesFn.call(currentNode, selector)) {
+        return currentNode;
+      }
+      else if(currentNode != stopAt && currentNode != document.body) {
+        currentNode = currentNode.parentNode;
+      }
+      else {
+        return false;
+      }
+    }
+  }
+
+  /* Extend the EventTarget prototype to add a delegateEventListener() event */
+  EventTarget.prototype.delegateEventListener = function(eName, toFind, fn) {
+    this.addEventListener(eName, function(event) {
+      var found = passedThrough(event, toFind, event.currentTarget);
+
+      if(found) {
+        // Execute the callback with the context set to the found element
+        // jQuery goes way further, it even has it's own event object
+        fn.call(found, event);
+      }
+    });
+  };
+
+}(window.document, window.EventTarget || window.Element));
 (function() {
   this.SuggestionsBox = (function() {
     function SuggestionsBox(options) {
@@ -35,6 +81,7 @@
       this.container.style.fontFamily = options.styleFrom.style.fontFamily;
       this.container.style.fontSize = options.styleFrom.style.fontSize;
       this.container.style.border = '1px solid #FFB7B2';
+      this.initEventHandler();
     }
 
     SuggestionsBox.prototype.renderFor = function(context) {
@@ -59,12 +106,22 @@
     SuggestionsBox.prototype.renderSuggestion = function(text) {
       var suggestionDiv;
       suggestionDiv = document.createElement('div');
+      suggestionDiv.className = 'suggestion';
       suggestionDiv.innerHTML = text;
       suggestionDiv.style.padding = '2px 5px';
       if (text === this.context.selectedSuggestion()) {
         suggestionDiv.style.backgroundColor = '#FFB7B2';
       }
       return suggestionDiv;
+    };
+
+    SuggestionsBox.prototype.initEventHandler = function() {
+      var suggestionsBox;
+      suggestionsBox = this;
+      return this.container.delegateEventListener('click', '.suggestion', function(event) {
+        suggestionsBox.context.forceSelectSuggestion(this.text);
+        return suggestionsBox.context.onConfirm();
+      });
     };
 
     return SuggestionsBox;
@@ -81,7 +138,7 @@
       this.possibleSuggestions = possibleSuggestions;
       this.initInternalState();
       this.initElements();
-      this.hookUpEventHandlers();
+      this.initEventHandlers();
       this.renderSuggestionsBox();
     }
 
@@ -119,6 +176,10 @@
       return this.offeredSuggestions[this.selectedSuggestionIndex];
     };
 
+    SuggestiveTextField.prototype.forceSelectSuggestion = function(text) {
+      return this.selectedSuggestionIndex = this.possibleSuggestions.indexOf(text);
+    };
+
     SuggestiveTextField.prototype.initElements = function() {
       var container, outerContainer;
       outerContainer = this.textInput.parentNode;
@@ -151,7 +212,7 @@
       return this.suggestionsBox.renderFor(this);
     };
 
-    SuggestiveTextField.prototype.hookUpEventHandlers = function() {
+    SuggestiveTextField.prototype.initEventHandlers = function() {
       var self;
       self = this;
       this.textInput.addEventListener('input', function() {
