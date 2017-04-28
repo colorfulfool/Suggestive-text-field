@@ -81,6 +81,7 @@
       this.container.style.fontFamily = options.styleFrom.style.fontFamily;
       this.container.style.fontSize = options.styleFrom.style.fontSize;
       this.container.style.border = '1px solid #FFB7B2';
+      this.container.style.backgroundColor = 'white';
     }
 
     SuggestionsBox.prototype.renderFor = function(context) {

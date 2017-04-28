@@ -8,6 +8,7 @@ class @SuggestionsBox
     @container.style.fontFamily = options.styleFrom.style.fontFamily
     @container.style.fontSize = options.styleFrom.style.fontSize
     @container.style.border = '1px solid #FFB7B2'
+    @container.style.backgroundColor = 'white'
 
   renderFor: (@context) ->
     if @context.offeredSuggestions.length > 0
