@@ -52,13 +52,11 @@ class @SuggestiveTextField
   outmostToken: ->
     @textInput.value.split(', ').pop()
 
-  tokensWithoutOutmost: ->
-    @textInput.value.split(', ').slice(0, -1)
+  valueWithoutOutmostToken: ->
+    @textInput.value.slice(0, -1 * @outmostToken().length)
 
   replaceOutmostTokenWith: (text) ->
-    tokens = @tokensWithoutOutmost()
-    tokens.push(text)
-    @textInput.value = tokens.join(', ')
+    @textInput.value = @valueWithoutOutmostToken() + text
 
   renderSuggestionsBox: ->
     @suggestionsBox.renderFor(this)

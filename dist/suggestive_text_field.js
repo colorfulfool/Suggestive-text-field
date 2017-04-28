@@ -13,7 +13,7 @@
       spacer.style.position = 'fixed';
       spacer.style.outline = '0';
       spacer.style.margin = '0';
-      spacer.style.padding = '0';
+      spacer.style.padding = parent.style.padding;
       spacer.style.border = '0';
       spacer.style.left = '0';
       spacer.style.whiteSpace = 'pre';
@@ -93,8 +93,8 @@
           suggestion = ref[i];
           this.container.appendChild(this.renderSuggestion(suggestion));
         }
-        this.container.style.left = widthOfText(this.context.tokensWithoutOutmost().join(', '), {
-          style: this.container
+        this.container.style.left = widthOfText(this.context.valueWithoutOutmostToken(), {
+          style: this.context.textInput
         });
         return this.container.style.visibility = 'visible';
       } else {
@@ -188,15 +188,12 @@
       return this.textInput.value.split(', ').pop();
     };
 
-    SuggestiveTextField.prototype.tokensWithoutOutmost = function() {
-      return this.textInput.value.split(', ').slice(0, -1);
+    SuggestiveTextField.prototype.valueWithoutOutmostToken = function() {
+      return this.textInput.value.slice(0, -1 * this.outmostToken().length);
     };
 
     SuggestiveTextField.prototype.replaceOutmostTokenWith = function(text) {
-      var tokens;
-      tokens = this.tokensWithoutOutmost();
-      tokens.push(text);
-      return this.textInput.value = tokens.join(', ');
+      return this.textInput.value = this.valueWithoutOutmostToken() + text;
     };
 
     SuggestiveTextField.prototype.renderSuggestionsBox = function() {

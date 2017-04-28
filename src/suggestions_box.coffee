@@ -16,7 +16,7 @@ class @SuggestionsBox
       for suggestion in @context.offeredSuggestions
         @container.appendChild @renderSuggestion(suggestion)
       
-      @container.style.left = widthOfText(@context.tokensWithoutOutmost().join(', '), style: @container)
+      @container.style.left = widthOfText(@context.valueWithoutOutmostToken(), style: @context.textInput)
       @container.style.visibility = 'visible'
     else
       @container.style.visibility = 'hidden'
