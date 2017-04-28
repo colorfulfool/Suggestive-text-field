@@ -1,5 +1,5 @@
 # Suggestive Text Field
-The most basic autocomplete input on the web. A single JS file that doesn't depend on anythig.
+The most basic autocomplete input on the web. It's a single JS file that doesn't depend on anything.
 
 ![Idea](http://i64.tinypic.com/rva636.png)
 
