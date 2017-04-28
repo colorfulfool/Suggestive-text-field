@@ -39,6 +39,7 @@ class @SuggestiveTextField
   initElements: ->
     outerContainer = @textInput.parentNode
     container = document.createElement('div')
+    container.className = 'suggestive-container'
     container.style.position = 'relative'
 
     @textInput.autocomplete = 'off'

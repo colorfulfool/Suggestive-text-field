@@ -174,6 +174,7 @@
       var container, outerContainer;
       outerContainer = this.textInput.parentNode;
       container = document.createElement('div');
+      container.className = 'suggestive-container';
       container.style.position = 'relative';
       this.textInput.autocomplete = 'off';
       this.suggestionsBox = new SuggestionsBox({
