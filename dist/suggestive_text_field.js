@@ -175,6 +175,7 @@
       outerContainer = this.textInput.parentNode;
       container = document.createElement('div');
       container.style.position = 'relative';
+      this.textInput.autocomplete = 'off';
       this.suggestionsBox = new SuggestionsBox({
         styleFrom: this.textInput
       });

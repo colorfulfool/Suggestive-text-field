@@ -41,6 +41,8 @@ class @SuggestiveTextField
     container = document.createElement('div')
     container.style.position = 'relative'
 
+    @textInput.autocomplete = 'off'
+
     @suggestionsBox = new SuggestionsBox(styleFrom: @textInput)
 
     container.appendChild @textInput
