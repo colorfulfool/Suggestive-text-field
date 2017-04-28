@@ -211,14 +211,21 @@
         return self.renderSuggestionsBox();
       });
       return this.textInput.addEventListener('keydown', function(event) {
+        var passThrough;
         if (event.which === 13 || event.which === 9 || event.which === 39) {
           self.onConfirm();
         } else if (event.which === 38) {
           self.onArrow(-1);
         } else if (event.which === 40) {
           self.onArrow(1);
+        } else {
+          passThrough = true;
         }
-        return self.renderSuggestionsBox();
+        if (!passThrough) {
+          self.renderSuggestionsBox();
+          event.preventDefault();
+          return event.stopPropagation();
+        }
       });
     };
 

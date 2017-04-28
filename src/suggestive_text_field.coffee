@@ -78,8 +78,13 @@ class @SuggestiveTextField
         self.onArrow(-1)
       else if event.which == 40 # arrow down
         self.onArrow(1)
-      self.renderSuggestionsBox()
+      else
+        passThrough = true
 
+      unless passThrough
+        self.renderSuggestionsBox()
+        event.preventDefault()
+        event.stopPropagation()
 
 cycleWithin = (initialValue, shift, options) ->
   [min, max] = options.limits
