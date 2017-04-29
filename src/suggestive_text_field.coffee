@@ -1,4 +1,5 @@
 #= require suggestions_box
+#= require wrap
 
 class @SuggestiveTextField
   constructor: (@textInput, @possibleSuggestions) ->
@@ -37,7 +38,6 @@ class @SuggestiveTextField
   # input/output
 
   initElements: ->
-    outerContainer = @textInput.parentNode
     container = document.createElement('div')
     container.className = 'suggestive-container'
     container.style.position = 'relative'
@@ -46,9 +46,8 @@ class @SuggestiveTextField
 
     @suggestionsBox = new SuggestionsBox(styleFrom: @textInput)
 
-    container.appendChild @textInput
+    wrap container, around: @textInput
     container.appendChild @suggestionsBox.container
-    outerContainer.appendChild container
 
   outmostToken: ->
     @textInput.value.split(', ').pop()

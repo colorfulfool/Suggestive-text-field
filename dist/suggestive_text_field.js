@@ -120,6 +120,15 @@
   })();
 
 }).call(this);
+var wrap = function (toWrap, wrapper) {
+    wrapper = wrapper || document.createElement('div');
+    if (toWrap.nextSibling) {
+        toWrap.parentNode.insertBefore(wrapper, toWrap.nextSibling);
+    } else {
+        toWrap.parentNode.appendChild(wrapper);
+    }
+    return wrapper.appendChild(toWrap);
+};
 (function() {
   var cycleWithin;
 
@@ -172,8 +181,7 @@
     };
 
     SuggestiveTextField.prototype.initElements = function() {
-      var container, outerContainer;
-      outerContainer = this.textInput.parentNode;
+      var container;
       container = document.createElement('div');
       container.className = 'suggestive-container';
       container.style.position = 'relative';
@@ -181,9 +189,8 @@
       this.suggestionsBox = new SuggestionsBox({
         styleFrom: this.textInput
       });
-      container.appendChild(this.textInput);
-      container.appendChild(this.suggestionsBox.container);
-      return outerContainer.appendChild(container);
+      wrap(this.textInput, container);
+      return container.appendChild(this.suggestionsBox.container);
     };
 
     SuggestiveTextField.prototype.outmostToken = function() {
