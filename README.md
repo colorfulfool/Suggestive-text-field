@@ -6,9 +6,11 @@ The most basic autocomplete input on the web. Comes as a single JS file that doe
   new SuggestiveTextField(textInput, ['monster', 'monstrosity', 'trap'])
 ```
 
-![Idea](http://i64.tinypic.com/rva636.png)
+![demonstration](http://i64.tinypic.com/j0i8w2.gif)
 
 ## Development
 
 `blade runner` to run the tests in the browser<br>
 `blade build` to re-compile the `dist/`
+
+![Idea](http://i64.tinypic.com/rva636.png)
