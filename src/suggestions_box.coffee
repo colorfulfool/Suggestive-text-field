@@ -31,4 +31,19 @@ class @SuggestionsBox
     if text == @context.selectedSuggestion()
       suggestionDiv.style.backgroundColor = '#FFB7B2'
 
+    @attachEventHandlers suggestionDiv
+
     suggestionDiv
+
+  attachEventHandlers: (suggestionDiv) ->
+    parentTextField = @context
+
+    suggestionDiv.addEventListener 'mouseout', (event) ->
+      console.log "mouseenter #{this.textContent}"
+      parentTextField.setSelectedSuggestionByText this.textContent
+      parentTextField.renderSuggestionsBox()
+      event.preventDefault()
+
+    suggestionDiv.addEventListener 'mousedown', ->
+      parentTextField.onConfirm()
+      parentTextField.renderSuggestionsBox()

@@ -112,7 +112,23 @@
       if (text === this.context.selectedSuggestion()) {
         suggestionDiv.style.backgroundColor = '#FFB7B2';
       }
+      this.attachEventHandlers(suggestionDiv);
       return suggestionDiv;
+    };
+
+    SuggestionsBox.prototype.attachEventHandlers = function(suggestionDiv) {
+      var parentTextField;
+      parentTextField = this.context;
+      suggestionDiv.addEventListener('mouseout', function(event) {
+        console.log("mouseenter " + this.textContent);
+        parentTextField.setSelectedSuggestionByText(this.textContent);
+        parentTextField.renderSuggestionsBox();
+        return event.preventDefault();
+      });
+      return suggestionDiv.addEventListener('mousedown', function() {
+        parentTextField.onConfirm();
+        return parentTextField.renderSuggestionsBox();
+      });
     };
 
     return SuggestionsBox;
@@ -120,7 +136,8 @@
   })();
 
 }).call(this);
-var wrap = function (toWrap, wrapper) {
+var wrap = function (wrapper, options) {
+	toWrap = options['around'];
     wrapper = wrapper || document.createElement('div');
     if (toWrap.nextSibling) {
         toWrap.parentNode.insertBefore(wrapper, toWrap.nextSibling);
@@ -176,8 +193,8 @@ var wrap = function (toWrap, wrapper) {
       return this.offeredSuggestions[this.selectedSuggestionIndex];
     };
 
-    SuggestiveTextField.prototype.selectSuggestionByText = function(text) {
-      return this.selectedSuggestionIndex = this.possibleSuggestions.indexOf(text);
+    SuggestiveTextField.prototype.setSelectedSuggestionByText = function(text) {
+      return this.selectedSuggestionIndex = this.offeredSuggestions.indexOf(text);
     };
 
     SuggestiveTextField.prototype.initElements = function() {
@@ -189,7 +206,9 @@ var wrap = function (toWrap, wrapper) {
       this.suggestionsBox = new SuggestionsBox({
         styleFrom: this.textInput
       });
-      wrap(this.textInput, container);
+      wrap(container, {
+        around: this.textInput
+      });
       return container.appendChild(this.suggestionsBox.container);
     };
 
