@@ -27,6 +27,7 @@ class @SuggestionsBox
     suggestionDiv.className = 'suggestion'
     suggestionDiv.innerHTML = text
     suggestionDiv.style.padding = '2px 5px'
+    suggestionDiv.style.cursor = 'pointer'
     
     if text == @context.selectedSuggestion()
       suggestionDiv.style.backgroundColor = '#FFB7B2'

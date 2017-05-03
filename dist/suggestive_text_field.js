@@ -109,6 +109,7 @@
       suggestionDiv.className = 'suggestion';
       suggestionDiv.innerHTML = text;
       suggestionDiv.style.padding = '2px 5px';
+      suggestionDiv.style.cursor = 'pointer';
       if (text === this.context.selectedSuggestion()) {
         suggestionDiv.style.backgroundColor = '#FFB7B2';
       }
@@ -119,7 +120,7 @@
     SuggestionsBox.prototype.attachEventHandlers = function(suggestionDiv) {
       var parentTextField;
       parentTextField = this.context;
-      suggestionDiv.addEventListener('mouseout', function() {
+      suggestionDiv.addEventListener('mouseenter', function() {
         parentTextField.onHover(this.textContent);
         return parentTextField.renderSuggestionsBox();
       });
