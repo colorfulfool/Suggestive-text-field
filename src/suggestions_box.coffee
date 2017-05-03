@@ -38,11 +38,9 @@ class @SuggestionsBox
   attachEventHandlers: (suggestionDiv) ->
     parentTextField = @context
 
-    suggestionDiv.addEventListener 'mouseout', (event) ->
-      console.log "mouseenter #{this.textContent}"
-      parentTextField.setSelectedSuggestionByText this.textContent
+    suggestionDiv.addEventListener 'mouseenter', ->
+      parentTextField.onHover(this.textContent)
       parentTextField.renderSuggestionsBox()
-      event.preventDefault()
 
     suggestionDiv.addEventListener 'mousedown', ->
       parentTextField.onConfirm()

@@ -119,11 +119,9 @@
     SuggestionsBox.prototype.attachEventHandlers = function(suggestionDiv) {
       var parentTextField;
       parentTextField = this.context;
-      suggestionDiv.addEventListener('mouseout', function(event) {
-        console.log("mouseenter " + this.textContent);
-        parentTextField.setSelectedSuggestionByText(this.textContent);
-        parentTextField.renderSuggestionsBox();
-        return event.preventDefault();
+      suggestionDiv.addEventListener('mouseout', function() {
+        parentTextField.onHover(this.textContent);
+        return parentTextField.renderSuggestionsBox();
       });
       return suggestionDiv.addEventListener('mousedown', function() {
         parentTextField.onConfirm();
@@ -169,6 +167,10 @@ var wrap = function (wrapper, options) {
       });
     };
 
+    SuggestiveTextField.prototype.onHover = function(text) {
+      return this.selectedSuggestionIndex = this.offeredSuggestions.indexOf(text);
+    };
+
     SuggestiveTextField.prototype.onConfirm = function() {
       this.replaceOutmostTokenWith(this.selectedSuggestion());
       this.offeredSuggestions = [];
@@ -191,10 +193,6 @@ var wrap = function (wrapper, options) {
 
     SuggestiveTextField.prototype.selectedSuggestion = function() {
       return this.offeredSuggestions[this.selectedSuggestionIndex];
-    };
-
-    SuggestiveTextField.prototype.setSelectedSuggestionByText = function(text) {
-      return this.selectedSuggestionIndex = this.offeredSuggestions.indexOf(text);
     };
 
     SuggestiveTextField.prototype.initElements = function() {

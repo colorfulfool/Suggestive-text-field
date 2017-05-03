@@ -14,6 +14,9 @@ class @SuggestiveTextField
   onArrow: (shift) ->
     @selectedSuggestionIndex = cycleWithin(@selectedSuggestionIndex, shift, limits: [0, @offeredSuggestions.length-1])
 
+  onHover: (text) ->
+    @selectedSuggestionIndex = @offeredSuggestions.indexOf(text)
+
   onConfirm: ->
     @replaceOutmostTokenWith @selectedSuggestion()
     @offeredSuggestions = []
@@ -31,9 +34,6 @@ class @SuggestiveTextField
 
   selectedSuggestion: ->
     @offeredSuggestions[@selectedSuggestionIndex]
-
-  setSelectedSuggestionByText: (text) ->
-    @selectedSuggestionIndex = @offeredSuggestions.indexOf(text)
 
   # input/output
 
