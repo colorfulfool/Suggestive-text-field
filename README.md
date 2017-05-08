@@ -1,5 +1,5 @@
 # Suggestive Text Field
-The most basic autocomplete input on the web. Comes as a single JS file that doesn't depend on anything.
+The most basic autocomplete input on the web. Comes as a single JS file, doesn't depend on anything.
 
 ```javascript
   textInput = document.querySelector('[name=tags]')
