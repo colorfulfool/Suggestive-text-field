@@ -2,8 +2,10 @@
 The most basic autocomplete input on the web. Comes as a single JS file, doesn't depend on anything.
 
 ```javascript
-  textInput = document.querySelector('[name=tags]')
-  new SuggestiveTextField(textInput, ['monster', 'monstrosity', 'trap'])
+  new SuggestiveTextField(
+    document.querySelector('input[name=tags]'),
+    ['monster', 'monstrosity', 'trap']
+  )
 ```
 
 ![demonstration](http://i64.tinypic.com/j0i8w2.gif)
