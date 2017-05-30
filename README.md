@@ -1,12 +1,12 @@
 # Suggestive Text Field
 The most basic autocomplete input on the web. Comes as a single JS file, doesn't depend on anything.
 
-![demonstration](http://i64.tinypic.com/j0i8w2.gif)
-
 ```javascript
   textInput = document.querySelector('input[name=tags]')
   new SuggestiveTextField(textInput, ['monster', 'monstrosity', 'trap'])
 ```
+
+![demonstration](http://i64.tinypic.com/j0i8w2.gif)
 
 ## Development
 
