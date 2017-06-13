@@ -1,4 +1,3 @@
-#= require width_of_text
 #= require delegate_event_handler
 
 class @SuggestionsBox
@@ -17,7 +16,7 @@ class @SuggestionsBox
       for suggestion in @context.offeredSuggestions
         @container.appendChild @renderSuggestion(suggestion)
       
-      @container.style.left = widthOfText(@context.valueWithoutOutmostToken(), style: @context.textInput)
+      @container.style.left = @context.suggestionBoxLeftShift()
       @container.style.visibility = 'visible'
     else
       @container.style.visibility = 'hidden'
@@ -32,15 +31,15 @@ class @SuggestionsBox
     if text == @context.selectedSuggestion()
       suggestionDiv.style.backgroundColor = '#FFB7B2'
 
-    @attachEventHandlers suggestionDiv
+    @suggestionEventHandlers suggestionDiv
 
     suggestionDiv
 
-  attachEventHandlers: (suggestionDiv) ->
+  suggestionEventHandlers: (suggestionDiv) ->
     parentTextField = @context
 
     suggestionDiv.addEventListener 'mouseenter', ->
-      parentTextField.onHover(this.textContent)
+      parentTextField.onHover(suggestionText: this.textContent)
       parentTextField.renderSuggestionsBox()
 
     suggestionDiv.addEventListener 'mousedown', ->

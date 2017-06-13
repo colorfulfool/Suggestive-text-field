@@ -1,5 +1,6 @@
 #= require suggestions_box
 #= require wrap
+#= require width_of_text
 
 class @SuggestiveTextField
   constructor: (@textInput, @possibleSuggestions) ->
@@ -14,8 +15,8 @@ class @SuggestiveTextField
   onArrow: (shift) ->
     @selectedSuggestionIndex = cycleWithin(@selectedSuggestionIndex, shift, limits: [0, @offeredSuggestions.length-1])
 
-  onHover: (text) ->
-    @selectedSuggestionIndex = @offeredSuggestions.indexOf(text)
+  onHover: (options) ->
+    @selectedSuggestionIndex = @offeredSuggestions.indexOf(options.suggestionText)
 
   onConfirm: ->
     @replaceOutmostTokenWith @selectedSuggestion()
@@ -60,6 +61,9 @@ class @SuggestiveTextField
 
   renderSuggestionsBox: ->
     @suggestionsBox.renderFor(this)
+
+  suggestionBoxLeftShift: ->
+    widthOfText(@valueWithoutOutmostToken(), style: @textInput)
 
   # wiring
 
