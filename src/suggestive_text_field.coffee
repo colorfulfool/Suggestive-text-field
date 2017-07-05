@@ -47,7 +47,7 @@ class @SuggestiveTextField
 
     @suggestionsBox = new SuggestionsBox(styleFrom: @textInput)
 
-    wrap container, around: @textInput
+    wrapElement container, around: @textInput
     container.appendChild @suggestionsBox.container
 
   outmostToken: ->

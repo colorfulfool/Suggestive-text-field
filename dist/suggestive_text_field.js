@@ -107,7 +107,7 @@
 
 }).call(this);
 (function() {
-  this.wrap = function(wrapper, options) {
+  this.wrapElement = function(wrapper, options) {
     var toWrap;
     toWrap = options['around'];
     wrapper = wrapper || document.createElement('div');
@@ -212,7 +212,7 @@
       this.suggestionsBox = new SuggestionsBox({
         styleFrom: this.textInput
       });
-      wrap(container, {
+      wrapElement(container, {
         around: this.textInput
       });
       return container.appendChild(this.suggestionsBox.container);

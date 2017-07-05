@@ -1,4 +1,4 @@
-@wrap = (wrapper, options) ->
+@wrapElement = (wrapper, options) ->
   toWrap = options['around']
   wrapper = wrapper or document.createElement('div')
   if toWrap.nextSibling
