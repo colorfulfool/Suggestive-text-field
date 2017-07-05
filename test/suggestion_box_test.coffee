@@ -7,17 +7,15 @@ QUnit.module 'SuggestionsBox', beforeEach: ->
   window.suggestionsBox = field.suggestionsBox
 
   textInput.value = 'entrapment, mon'
-  triggerEvent(textInput, 'input')
+  triggerEvent textInput, 'input'
+  assert.deepEqual field.offeredSuggestions, ['monster', 'monstrosity']
 
 QUnit.test 'renders suggestions', (assert) ->
-  assert.deepEqual field.offeredSuggestions, ['monster', 'monstrosity']
   assert.equal suggestionsBox.container.querySelectorAll('.suggestion').length, field.offeredSuggestions.length
 
 QUnit.test 'suggestion selected with mouse', (assert) ->
-  assert.deepEqual field.offeredSuggestions, ['monster', 'monstrosity']
-
   secondSuggestion = suggestionsBox.container.querySelectorAll('.suggestion')[1]
-  triggerEvent(secondSuggestion, 'mouseenter')
-  triggerEvent(secondSuggestion, 'mousedown')
+  triggerEvent secondSuggestion, 'mouseenter'
+  triggerEvent secondSuggestion, 'mousedown'
 
   assert.equal textInput.value, 'entrapment, monstrosity'

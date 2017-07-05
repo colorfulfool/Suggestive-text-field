@@ -13,9 +13,9 @@ class @SuggestiveTextField
     @offeredSuggestions = @matchingSuggestions @outmostToken()
 
   onArrow: (shift) ->
-    @selectedSuggestionIndex = cycleWithin(@selectedSuggestionIndex, shift, limits: [0, @offeredSuggestions.length-1])
+    @selectedSuggestionIndex = shiftWithinLimits(@selectedSuggestionIndex, shift, limits: [0, @offeredSuggestions.length-1])
 
-  onHover: (options) ->
+  onHover: (options = {}) ->
     @selectedSuggestionIndex = @offeredSuggestions.indexOf(options.suggestionText)
 
   onConfirm: ->
@@ -62,7 +62,7 @@ class @SuggestiveTextField
   renderSuggestionsBox: ->
     @suggestionsBox.renderFor(this)
 
-  suggestionBoxLeftShift: ->
+  suggestionBoxLeftMargin: ->
     widthOfText(@valueWithoutOutmostToken(), style: @textInput)
 
   # wiring
@@ -88,7 +88,7 @@ class @SuggestiveTextField
         event.preventDefault()
         event.stopPropagation()
 
-cycleWithin = (initialValue, shift, options) ->
+shiftWithinLimits = (initialValue, shift, options) ->
   [min, max] = options.limits
   attemptedValue = initialValue + shift
   if attemptedValue > max

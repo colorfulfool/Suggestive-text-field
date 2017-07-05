@@ -1,32 +1,3 @@
-(function() {
-  var calculateWidthForText;
-
-  this.widthOfText = function(text, options) {
-    return calculateWidthForText(text, options.style) + 'px';
-  };
-
-  calculateWidthForText = function(text, parent) {
-    var spacer;
-    if (spacer === void 0) {
-      spacer = document.createElement('span');
-      spacer.style.visibility = 'hidden';
-      spacer.style.position = 'fixed';
-      spacer.style.outline = '0';
-      spacer.style.margin = '0';
-      spacer.style.padding = parent.style.padding;
-      spacer.style.border = '0';
-      spacer.style.left = '0';
-      spacer.style.whiteSpace = 'pre';
-      spacer.style.fontSize = parent.style.fontSize;
-      spacer.style.fontFamily = parent.style.fontFamily;
-      spacer.style.fontWeight = 'normal';
-      document.body.appendChild(spacer);
-    }
-    spacer.innerHTML = String(text).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    return spacer.getBoundingClientRect().right;
-  };
-
-}).call(this);
 (function(document, EventTarget) {
   var elementProto = window.Element.prototype,
       matchesFn = elementProto.matches;
@@ -94,9 +65,7 @@
           suggestion = ref[i];
           this.container.appendChild(this.renderSuggestion(suggestion));
         }
-        this.container.style.left = widthOfText(this.context.valueWithoutOutmostToken(), {
-          style: this.context.textInput
-        });
+        this.container.style.left = this.context.suggestionBoxLeftMargin();
         return this.container.style.visibility = 'visible';
       } else {
         return this.container.style.visibility = 'hidden';
@@ -113,15 +82,17 @@
       if (text === this.context.selectedSuggestion()) {
         suggestionDiv.style.backgroundColor = '#FFB7B2';
       }
-      this.attachEventHandlers(suggestionDiv);
+      this.suggestionEventHandlers(suggestionDiv);
       return suggestionDiv;
     };
 
-    SuggestionsBox.prototype.attachEventHandlers = function(suggestionDiv) {
+    SuggestionsBox.prototype.suggestionEventHandlers = function(suggestionDiv) {
       var parentTextField;
       parentTextField = this.context;
       suggestionDiv.addEventListener('mouseenter', function() {
-        parentTextField.onHover(this.textContent);
+        parentTextField.onHover({
+          suggestionText: this.textContent
+        });
         return parentTextField.renderSuggestionsBox();
       });
       return suggestionDiv.addEventListener('mousedown', function() {
@@ -135,18 +106,51 @@
   })();
 
 }).call(this);
-var wrap = function (wrapper, options) {
-	toWrap = options['around'];
+(function() {
+  this.wrap = function(wrapper, options) {
+    var toWrap;
+    toWrap = options['around'];
     wrapper = wrapper || document.createElement('div');
     if (toWrap.nextSibling) {
-        toWrap.parentNode.insertBefore(wrapper, toWrap.nextSibling);
+      toWrap.parentNode.insertBefore(wrapper, toWrap.nextSibling);
     } else {
-        toWrap.parentNode.appendChild(wrapper);
+      toWrap.parentNode.appendChild(wrapper);
     }
     return wrapper.appendChild(toWrap);
-};
+  };
+
+}).call(this);
 (function() {
-  var cycleWithin;
+  var calculateWidthForText;
+
+  this.widthOfText = function(text, options) {
+    return calculateWidthForText(text, options.style) + 'px';
+  };
+
+  calculateWidthForText = function(text, parent) {
+    var spacer;
+    if (spacer === void 0) {
+      spacer = document.createElement('span');
+      spacer.style.visibility = 'hidden';
+      spacer.style.position = 'fixed';
+      spacer.style.outline = '0';
+      spacer.style.margin = '0';
+      spacer.style.padding = parent.style.padding;
+      spacer.style.border = '0';
+      spacer.style.left = '0';
+      spacer.style.whiteSpace = 'pre';
+      spacer.style.fontSize = parent.style.fontSize;
+      spacer.style.fontFamily = parent.style.fontFamily;
+      spacer.style.fontWeight = 'normal';
+      document.body.appendChild(spacer);
+    }
+    spacer.innerHTML = String(text).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return spacer.getBoundingClientRect().right;
+  };
+
+}).call(this);
+(function() {
+  var shiftWithinLimits;
 
   this.SuggestiveTextField = (function() {
     function SuggestiveTextField(textInput, possibleSuggestions) {
@@ -163,13 +167,16 @@ var wrap = function (wrapper, options) {
     };
 
     SuggestiveTextField.prototype.onArrow = function(shift) {
-      return this.selectedSuggestionIndex = cycleWithin(this.selectedSuggestionIndex, shift, {
+      return this.selectedSuggestionIndex = shiftWithinLimits(this.selectedSuggestionIndex, shift, {
         limits: [0, this.offeredSuggestions.length - 1]
       });
     };
 
-    SuggestiveTextField.prototype.onHover = function(text) {
-      return this.selectedSuggestionIndex = this.offeredSuggestions.indexOf(text);
+    SuggestiveTextField.prototype.onHover = function(options) {
+      if (options == null) {
+        options = {};
+      }
+      return this.selectedSuggestionIndex = this.offeredSuggestions.indexOf(options.suggestionText);
     };
 
     SuggestiveTextField.prototype.onConfirm = function() {
@@ -227,6 +234,12 @@ var wrap = function (wrapper, options) {
       return this.suggestionsBox.renderFor(this);
     };
 
+    SuggestiveTextField.prototype.suggestionBoxLeftMargin = function() {
+      return widthOfText(this.valueWithoutOutmostToken(), {
+        style: this.textInput
+      });
+    };
+
     SuggestiveTextField.prototype.initEventHandlers = function() {
       var self;
       self = this;
@@ -257,7 +270,7 @@ var wrap = function (wrapper, options) {
 
   })();
 
-  cycleWithin = function(initialValue, shift, options) {
+  shiftWithinLimits = function(initialValue, shift, options) {
     var attemptedValue, max, min, ref;
     ref = options.limits, min = ref[0], max = ref[1];
     attemptedValue = initialValue + shift;

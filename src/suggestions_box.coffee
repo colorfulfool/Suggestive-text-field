@@ -16,7 +16,7 @@ class @SuggestionsBox
       for suggestion in @context.offeredSuggestions
         @container.appendChild @renderSuggestion(suggestion)
       
-      @container.style.left = @context.suggestionBoxLeftShift()
+      @container.style.left = @context.suggestionBoxLeftMargin()
       @container.style.visibility = 'visible'
     else
       @container.style.visibility = 'hidden'
