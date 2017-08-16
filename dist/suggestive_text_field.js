@@ -45,14 +45,32 @@
 
 }(window.document, window.EventTarget || window.Element));
 (function() {
+  this.setStyle = function(element, properties) {
+    return Object.assign(element.style, properties);
+  };
+
+  this.createElement = function(html, style) {
+    var div, generated;
+    div = document.createElement('div');
+    div.innerHTML = html;
+    generated = div.firstChild;
+    if (style != null) {
+      setStyle(generated, style);
+    }
+    return generated;
+  };
+
+}).call(this);
+(function() {
   this.SuggestionsBox = (function() {
     function SuggestionsBox(options) {
-      this.container = document.createElement('div');
-      this.container.style.position = 'absolute';
-      this.container.style.fontFamily = options.styleFrom.style.fontFamily;
-      this.container.style.fontSize = options.styleFrom.style.fontSize;
-      this.container.style.border = '1px solid #FFB7B2';
-      this.container.style.backgroundColor = 'white';
+      this.container = createElement("<div></div>", {
+        position: 'absolute',
+        fontFamily: options.styleFrom.style.fontFamily,
+        fontSize: options.styleFrom.style.fontSize,
+        border: '1px solid #FFB7B2',
+        backgroundColor: 'white'
+      });
     }
 
     SuggestionsBox.prototype.renderFor = function(context) {
@@ -74,13 +92,14 @@
 
     SuggestionsBox.prototype.renderSuggestion = function(text) {
       var suggestionDiv;
-      suggestionDiv = document.createElement('div');
-      suggestionDiv.className = 'suggestion';
-      suggestionDiv.innerHTML = text;
-      suggestionDiv.style.padding = '2px 5px';
-      suggestionDiv.style.cursor = 'pointer';
+      suggestionDiv = createElement("<div class='suggestion'>" + text + "</div>", {
+        padding: '2px 5px',
+        cursor: 'pointer'
+      });
       if (text === this.context.selectedSuggestion()) {
-        suggestionDiv.style.backgroundColor = '#FFB7B2';
+        setStyle(suggestionDiv, {
+          backgroundColor: '#FFB7B2'
+        });
       }
       this.suggestionEventHandlers(suggestionDiv);
       return suggestionDiv;
@@ -153,14 +172,22 @@
   var shiftWithinLimits;
 
   this.SuggestiveTextField = (function() {
-    function SuggestiveTextField(textInput, possibleSuggestions) {
+    function SuggestiveTextField(textInput, possibleSuggestions, options1) {
       this.textInput = textInput;
       this.possibleSuggestions = possibleSuggestions;
+      this.options = options1 != null ? options1 : {};
+      this.defaultOptions({
+        tokenSeparator: ', '
+      });
       this.initInternalState();
       this.initElements();
       this.initEventHandlers();
       this.renderSuggestionsBox();
     }
+
+    SuggestiveTextField.prototype.defaultOptions = function(defaultOptions) {
+      return this.options = Object.assign(defaultOptions, this.options);
+    };
 
     SuggestiveTextField.prototype.onType = function() {
       return this.offeredSuggestions = this.matchingSuggestions(this.outmostToken());
@@ -205,9 +232,9 @@
 
     SuggestiveTextField.prototype.initElements = function() {
       var container;
-      container = document.createElement('div');
-      container.className = 'suggestive-container';
-      container.style.position = 'relative';
+      container = createElement("<div class='suggestive-container'></div>", {
+        position: 'relative'
+      });
       this.textInput.autocomplete = 'off';
       this.suggestionsBox = new SuggestionsBox({
         styleFrom: this.textInput
@@ -219,7 +246,11 @@
     };
 
     SuggestiveTextField.prototype.outmostToken = function() {
-      return this.textInput.value.split(', ').pop();
+      if (this.options.tokenSeparator) {
+        return this.textInput.value.split(this.options.tokenSeparator).pop();
+      } else {
+        return this.textInput.value;
+      }
     };
 
     SuggestiveTextField.prototype.valueWithoutOutmostToken = function() {
