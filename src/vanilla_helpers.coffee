@@ -1,4 +1,4 @@
-setStyle = (element, properties) ->
+@setStyle = (element, properties) ->
   Object.assign(element.style, properties)
 
 @createElement = (html, style) ->

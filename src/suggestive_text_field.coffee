@@ -3,11 +3,18 @@
 #= require width_of_text
 
 class @SuggestiveTextField
-  constructor: (@textInput, @possibleSuggestions) ->
+  constructor: (@textInput, @possibleSuggestions, @options = {}) ->
+    @defaultOptions {tokenSeparator: ', '}
+
     @initInternalState()
     @initElements()
     @initEventHandlers()
     @renderSuggestionsBox()
+
+  defaultOptions: (defaultOptions) ->
+    @options = Object.assign(defaultOptions, @options)
+
+  # input handling
 
   onType: ->
     @offeredSuggestions = @matchingSuggestions @outmostToken()
@@ -39,9 +46,10 @@ class @SuggestiveTextField
   # input/output
 
   initElements: ->
-    container = document.createElement('div')
-    container.className = 'suggestive-container'
-    container.style.position = 'relative'
+    container = createElement(
+      "<div class='suggestive-container'></div>",
+      {position: 'relative'}
+    )
 
     @textInput.autocomplete = 'off'
 
@@ -51,7 +59,10 @@ class @SuggestiveTextField
     container.appendChild @suggestionsBox.container
 
   outmostToken: ->
-    @textInput.value.split(', ').pop()
+    if @options.tokenSeparator
+      @textInput.value.split(@options.tokenSeparator).pop()
+    else
+      @textInput.value
 
   valueWithoutOutmostToken: ->
     @textInput.value.slice(0, -1 * @outmostToken().length)
@@ -87,6 +98,7 @@ class @SuggestiveTextField
         self.renderSuggestionsBox()
         event.preventDefault()
         event.stopPropagation()
+
 
 shiftWithinLimits = (initialValue, shift, options) ->
   [min, max] = options.limits

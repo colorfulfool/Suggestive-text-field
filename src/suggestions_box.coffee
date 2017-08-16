@@ -34,10 +34,10 @@ class @SuggestionsBox
       }
     )
     
-    if text == @context.selectedSuggestion()
-      suggestionDiv.style.backgroundColor = '#FFB7B2'
+    if text is @context.selectedSuggestion()
+      setStyle suggestionDiv, {backgroundColor: '#FFB7B2'}
 
-    @suggestionEventHandlers suggestionDiv
+    @suggestionEventHandlers(suggestionDiv)
 
     suggestionDiv
 
