@@ -1,13 +1,17 @@
 #= require delegate_event_handler
+#= require vanilla_helpers
 
 class @SuggestionsBox
   constructor: (options) ->
-    @container = document.createElement('div')
-    @container.style.position = 'absolute'
-    @container.style.fontFamily = options.styleFrom.style.fontFamily
-    @container.style.fontSize = options.styleFrom.style.fontSize
-    @container.style.border = '1px solid #FFB7B2'
-    @container.style.backgroundColor = 'white'
+    @container = createElement(
+      "<div></div>", {
+        position: 'absolute',
+        fontFamily: options.styleFrom.style.fontFamily,
+        fontSize: options.styleFrom.style.fontSize,
+        border: '1px solid #FFB7B2',
+        backgroundColor: 'white'
+      }
+    )
 
   renderFor: (@context) ->
     if @context.offeredSuggestions.length > 0
@@ -22,11 +26,13 @@ class @SuggestionsBox
       @container.style.visibility = 'hidden'
 
   renderSuggestion: (text) ->
-    suggestionDiv = document.createElement('div')
-    suggestionDiv.className = 'suggestion'
-    suggestionDiv.innerHTML = text
-    suggestionDiv.style.padding = '2px 5px'
-    suggestionDiv.style.cursor = 'pointer'
+    suggestionDiv = createElement(
+      "<div class='suggestion'>#{text}</div>",
+      {
+        padding: '2px 5px', 
+        cursor: 'pointer'
+      }
+    )
     
     if text == @context.selectedSuggestion()
       suggestionDiv.style.backgroundColor = '#FFB7B2'

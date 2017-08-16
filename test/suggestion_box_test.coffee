@@ -1,7 +1,7 @@
 #= require test_helper
 #= require suggestive_text_field
 
-QUnit.module 'SuggestionsBox', beforeEach: ->
+QUnit.module 'SuggestionsBox', beforeEach: (assert) ->
   window.textInput = createTextInput()
   window.field = new SuggestiveTextField(textInput, ['monster', 'monstrosity', 'moonlight', 'trap'])
   window.suggestionsBox = field.suggestionsBox
