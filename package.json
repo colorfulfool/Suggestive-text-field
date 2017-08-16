@@ -1,0 +1,16 @@
+{
+  "name": "suggestive-text-field",
+  "version": "0.1.0",
+  "main": "dist/suggestive_text_field.js",
+  "homepage": "https://github.com/colorfulfool/Suggestive-text-field",
+  "bugs": "https://github.com/colorfulfool/Suggestive-text-field/issues",
+  "repository": {
+    "url": "https://github.com/colorfulfool/Suggestive-text-field",
+    "type": "git"
+  },
+  "author": "Anton Khamets <colorfulfool@gmail.com>",
+  "license": "MIT",
+  "files": [
+    "dist/*.js"
+  ]
+}
