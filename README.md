@@ -1,5 +1,5 @@
 # Suggestive Text Field
-The most basic autocomplete input on the web. Comes as a single JS file, doesn't depend on anything.
+The most basic autocomplete input on the web. Comes as a single JS file that doesn't depend on anything.
 
 ```javascript
   textInput = document.querySelector('input[name=tags]')
@@ -11,7 +11,7 @@ The most basic autocomplete input on the web. Comes as a single JS file, doesn't
 ### Options
 
 ```javascript
-new SuggestiveTextField(textInput, suggestions, {tokenSeparator: ', '})
+SuggestiveTextField(textInput, suggestions, {tokenSeparator: ', '})
 ```
 
 Pass your own `tokenSeparator` to override or pass `false` to disallow choosing multiple suggestions.
@@ -20,5 +20,3 @@ Pass your own `tokenSeparator` to override or pass `false` to disallow choosing 
 
 `blade runner` to run the tests in the browser<br>
 `blade build` to re-compile the `dist/`
-
-![Idea](http://i64.tinypic.com/rva636.png)
