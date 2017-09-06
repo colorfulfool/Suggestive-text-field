@@ -12,6 +12,7 @@ The most basic autocomplete input on the web. Comes as a single JS file that doe
 
 ```javascript
 SuggestiveTextField(textInput, suggestions, {
+
   tokenSeparator: ', ', // or pass false to disallow multiple selections
   
   // Pass your own functions as hooks to alter the behaviour:
