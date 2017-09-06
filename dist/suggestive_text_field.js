@@ -90,19 +90,27 @@
       }
     };
 
-    SuggestionsBox.prototype.renderSuggestion = function(text) {
+    SuggestionsBox.prototype.renderSuggestion = function(suggestion) {
       var suggestionDiv;
-      suggestionDiv = createElement("<div class='suggestion'>" + text + "</div>", {
+      suggestionDiv = createElement("<div class='suggestion'>" + (this.suggestionText(suggestion)) + "</div>", {
         padding: '2px 5px',
         cursor: 'pointer'
       });
-      if (text === this.context.selectedSuggestion()) {
+      if (suggestion === this.context.selectedSuggestion()) {
         setStyle(suggestionDiv, {
           backgroundColor: '#FFB7B2'
         });
       }
       this.suggestionEventHandlers(suggestionDiv);
       return suggestionDiv;
+    };
+
+    SuggestionsBox.prototype.suggestionText = function(suggestion) {
+      if (suggestion instanceof Object) {
+        return suggestion.text;
+      } else {
+        return suggestion;
+      }
     };
 
     SuggestionsBox.prototype.suggestionEventHandlers = function(suggestionDiv) {
@@ -207,9 +215,11 @@
     };
 
     SuggestiveTextField.prototype.onConfirm = function() {
+      var base;
       this.replaceOutmostTokenWith(this.selectedSuggestion());
       this.offeredSuggestions = [];
-      return this.selectedSuggestionIndex = 0;
+      this.selectedSuggestionIndex = 0;
+      return typeof (base = this.options).onConfirmHook === "function" ? base.onConfirmHook(this.selectedSuggestion()) : void 0;
     };
 
     SuggestiveTextField.prototype.initInternalState = function() {
@@ -221,6 +231,10 @@
       if (token.length < 1) {
         return [];
       }
+      return (this.options.suggestionsForToken || this.suggestionsForToken).call(this, token);
+    };
+
+    SuggestiveTextField.prototype.suggestionsForToken = function(token) {
       return this.possibleSuggestions.filter(function(suggestion) {
         return suggestion.startsWith(token);
       });
