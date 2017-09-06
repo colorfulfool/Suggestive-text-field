@@ -14,7 +14,8 @@ The most basic autocomplete input on the web. Comes as a single JS file that doe
 SuggestiveTextField(textInput, suggestions, {
   tokenSeparator: ', ', // or pass false to disallow multiple selections
   
-  // pass your own functions as hooks to alter the behaviour:
+  // Pass your own functions as hooks to alter the behaviour:
+  
   suggestionsForToken: function (token) {
     // return suggestions that start with `token`
   },
