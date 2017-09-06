@@ -16,6 +16,21 @@ SuggestiveTextField(textInput, suggestions, {tokenSeparator: ', '})
 
 Pass your own `tokenSeparator` to override or pass `false` to disallow choosing multiple suggestions.
 
+#### Hooks
+
+Pass your own functions as hooks to alter the behaviour.
+
+```javascript
+  {
+    suggestionsForToken: function (token) {
+      // return suggestions that start with `token`
+    },
+    onConfirmHook: function (selectedSuggestion) {
+      // do something extra when a suggestion is selected
+    }
+  }
+```
+
 ## Development
 
 `blade runner` to run the tests in the browser<br>

@@ -3,7 +3,7 @@
 
 QUnit.module 'SuggestiveTextField', beforeEach: ->
   window.textInput = createTextInput()
-  window.field = new SuggestiveTextField(textInput, ['monster', 'monstrosity', 'moonlight', 'trap'])
+  window.field = fieldWithOptions {}
 
 QUnit.test 'user starts with existing token', (assert) ->
   textInput.value = 'mo'
@@ -26,3 +26,14 @@ QUnit.test 'user continues with existing token', (assert) ->
 
   triggerEvent(textInput, 'keydown', 13) # Enter
   assert.equal textInput.value, 'entrapment, monster'
+
+QUnit.test 'developer has overridden suggestionsForToken', (assert) ->
+  window.field = fieldWithOptions {
+    suggestionsForToken: (token) ->
+      ["#{token}re", "#{token}st", "the #{token}st"]
+  }
+
+  textInput.value = 'mo'
+  triggerEvent(textInput, 'input')
+  assert.deepEqual field.offeredSuggestions, ['more', 'most', 'the most']
+  assert.equal field.selectedSuggestion(), 'more'

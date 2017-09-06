@@ -30,6 +30,8 @@ class @SuggestiveTextField
     @offeredSuggestions = []
     @selectedSuggestionIndex = 0
 
+    @options.onConfirmHook? @selectedSuggestion()
+
   # logic
 
   initInternalState: ->
@@ -38,6 +40,9 @@ class @SuggestiveTextField
 
   matchingSuggestions: (token) ->
     return [] if token.length < 1
+    (@options.suggestionsForToken || @suggestionsForToken).call(this, token)
+
+  suggestionsForToken: (token) ->
     @possibleSuggestions.filter (suggestion) -> suggestion.startsWith(token)
 
   selectedSuggestion: ->

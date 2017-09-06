@@ -10,3 +10,7 @@
   event = new CustomEvent(eventName)
   event.which = keyCode
   element.dispatchEvent(event)
+
+@fieldWithOptions = (options = {}) ->
+  new SuggestiveTextField(
+    textInput, ['monster', 'monstrosity', 'moonlight', 'trap'], options)
