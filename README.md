@@ -12,8 +12,9 @@ The most basic autocomplete input on the web. Comes as a single JS file that doe
 
 ```javascript
 SuggestiveTextField(textInput, suggestions, {
-  tokenSeparator: ', ',
+  tokenSeparator: ', ', // or pass false to disallow multiple selections
   
+  // pass your own functions as hooks to alter the behaviour:
   suggestionsForToken: function (token) {
     // return suggestions that start with `token`
   },
@@ -22,10 +23,6 @@ SuggestiveTextField(textInput, suggestions, {
   }
 })
 ```
-
-Pass your own `tokenSeparator` to override or pass `false` to disallow choosing multiple suggestions.
-
-Pass your own functions as hooks to alter the behaviour.
 
 ## Development
 
