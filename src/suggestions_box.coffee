@@ -25,21 +25,27 @@ class @SuggestionsBox
     else
       @container.style.visibility = 'hidden'
 
-  renderSuggestion: (text) ->
+  renderSuggestion: (suggestion) ->
     suggestionDiv = createElement(
-      "<div class='suggestion'>#{text}</div>",
+      "<div class='suggestion'>#{@suggestionText suggestion}</div>",
       {
         padding: '2px 5px', 
         cursor: 'pointer'
       }
     )
     
-    if text is @context.selectedSuggestion()
+    if suggestion is @context.selectedSuggestion()
       setStyle suggestionDiv, {backgroundColor: '#FFB7B2'}
 
     @suggestionEventHandlers(suggestionDiv)
 
     suggestionDiv
+
+  suggestionText: (suggestion) ->
+    if suggestion instanceof Object
+      suggestion.text
+    else
+      suggestion
 
   suggestionEventHandlers: (suggestionDiv) ->
     parentTextField = @context
