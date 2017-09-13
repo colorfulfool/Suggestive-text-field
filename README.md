@@ -18,10 +18,12 @@ SuggestiveTextField(textInput, suggestions, {
   // Pass your own functions as hooks to alter the behaviour:
   
   suggestionsForToken: function (token) {
-    // return suggestions that start with `token`
+    // Return suggestions that match `token`
+    // as array of strings or array of objects (must have `text` property).
+    // If your operation is async, return a Promise.
   },
   onConfirmHook: function (selectedSuggestion) {
-    // do something extra when a suggestion is selected
+    // Do something extra when a suggestion is selected
   }
 })
 ```

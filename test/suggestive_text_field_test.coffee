@@ -4,6 +4,7 @@
 QUnit.module 'SuggestiveTextField', beforeEach: ->
   window.textInput = createTextInput()
   window.field = fieldWithOptions {}
+  window.suggestionsBox = field.suggestionsBox
 
 QUnit.test 'user starts with existing token', (assert) ->
   textInput.value = 'mo'

@@ -17,7 +17,9 @@ class @SuggestiveTextField
   # input handling
 
   onType: ->
-    @offeredSuggestions = @matchingSuggestions @outmostToken()
+    waitOn(@matchingSuggestions @outmostToken()).then (matchingSuggestions) =>
+      @offeredSuggestions = matchingSuggestions
+      @renderSuggestionsBox()
 
   onArrow: (shift) ->
     @selectedSuggestionIndex = shiftWithinLimits(@selectedSuggestionIndex, shift, limits: [0, @offeredSuggestions.length-1])
@@ -86,7 +88,6 @@ class @SuggestiveTextField
   initEventHandlers: ->
     @textInput.addEventListener 'input', =>
       @onType()
-      @renderSuggestionsBox()
 
     @textInput.addEventListener 'keydown', (event) =>
       if event.which == 13 or event.which == 9 or event.which == 39
@@ -113,3 +114,8 @@ shiftWithinLimits = (initialValue, shift, options) ->
     max
   else
     attemptedValue
+
+waitOn = (value) ->
+  promise = if value instanceof Promise then value \
+    else new Promise((resolve, reject) => resolve(value))
+  
