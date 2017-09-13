@@ -84,23 +84,22 @@ class @SuggestiveTextField
   # wiring
 
   initEventHandlers: ->
-    self = @
-    @textInput.addEventListener 'input', -> 
-      self.onType()
-      self.renderSuggestionsBox()
+    @textInput.addEventListener 'input', =>
+      @onType()
+      @renderSuggestionsBox()
 
-    @textInput.addEventListener 'keydown', (event) ->
+    @textInput.addEventListener 'keydown', (event) =>
       if event.which == 13 or event.which == 9 or event.which == 39
-        self.onConfirm()
+        @onConfirm()
       else if event.which == 38 # arrow up
-        self.onArrow(-1)
+        @onArrow(-1)
       else if event.which == 40 # arrow down
-        self.onArrow(1)
+        @onArrow(1)
       else
         passThrough = true
 
       unless passThrough
-        self.renderSuggestionsBox()
+        @renderSuggestionsBox()
         event.preventDefault()
         event.stopPropagation()
 

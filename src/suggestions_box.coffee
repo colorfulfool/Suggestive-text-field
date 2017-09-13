@@ -54,6 +54,6 @@ class @SuggestionsBox
       parentTextField.onHover(suggestionText: this.textContent)
       parentTextField.renderSuggestionsBox()
 
-    suggestionDiv.addEventListener 'mousedown', ->
-      parentTextField.onConfirm()
-      parentTextField.renderSuggestionsBox()
+    suggestionDiv.addEventListener 'mousedown', =>
+      @context.onConfirm()
+      @context.renderSuggestionsBox()
