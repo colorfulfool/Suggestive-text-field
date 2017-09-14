@@ -41,7 +41,7 @@ class @SuggestiveTextField
     @selectedSuggestionIndex = 0
 
   matchingSuggestions: (token) ->
-    if token.length > @options.minTokenLength
+    if token.length >= @options.minTokenLength
       (@options.suggestionsForToken || @suggestionsForToken).call(this, token)
     else
       []

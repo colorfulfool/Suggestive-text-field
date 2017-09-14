@@ -237,7 +237,7 @@
     };
 
     SuggestiveTextField.prototype.matchingSuggestions = function(token) {
-      if (token.length > this.options.minTokenLength) {
+      if (token.length >= this.options.minTokenLength) {
         return (this.options.suggestionsForToken || this.suggestionsForToken).call(this, token);
       } else {
         return [];
