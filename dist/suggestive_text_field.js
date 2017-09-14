@@ -66,6 +66,7 @@
     function SuggestionsBox(options) {
       this.container = createElement("<div></div>", {
         position: 'absolute',
+        zIndex: 9,
         fontFamily: options.styleFrom.style.fontFamily,
         fontSize: options.styleFrom.style.fontSize,
         border: '1px solid #FFB7B2',
@@ -122,10 +123,12 @@
         });
         return parentTextField.renderSuggestionsBox();
       });
-      return suggestionDiv.addEventListener('mousedown', function() {
-        parentTextField.onConfirm();
-        return parentTextField.renderSuggestionsBox();
-      });
+      return suggestionDiv.addEventListener('mousedown', (function(_this) {
+        return function() {
+          _this.context.onConfirm();
+          return _this.context.renderSuggestionsBox();
+        };
+      })(this));
     };
 
     return SuggestionsBox;
@@ -286,29 +289,31 @@
     };
 
     SuggestiveTextField.prototype.initEventHandlers = function() {
-      var self;
-      self = this;
-      this.textInput.addEventListener('input', function() {
-        self.onType();
-        return self.renderSuggestionsBox();
-      });
-      return this.textInput.addEventListener('keydown', function(event) {
-        var passThrough;
-        if (event.which === 13 || event.which === 9 || event.which === 39) {
-          self.onConfirm();
-        } else if (event.which === 38) {
-          self.onArrow(-1);
-        } else if (event.which === 40) {
-          self.onArrow(1);
-        } else {
-          passThrough = true;
-        }
-        if (!passThrough) {
-          self.renderSuggestionsBox();
-          event.preventDefault();
-          return event.stopPropagation();
-        }
-      });
+      this.textInput.addEventListener('input', (function(_this) {
+        return function() {
+          _this.onType();
+          return _this.renderSuggestionsBox();
+        };
+      })(this));
+      return this.textInput.addEventListener('keydown', (function(_this) {
+        return function(event) {
+          var passThrough;
+          if (event.which === 13 || event.which === 9 || event.which === 39) {
+            _this.onConfirm();
+          } else if (event.which === 38) {
+            _this.onArrow(-1);
+          } else if (event.which === 40) {
+            _this.onArrow(1);
+          } else {
+            passThrough = true;
+          }
+          if (!passThrough) {
+            _this.renderSuggestionsBox();
+            event.preventDefault();
+            return event.stopPropagation();
+          }
+        };
+      })(this));
     };
 
     return SuggestiveTextField;
