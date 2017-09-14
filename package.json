@@ -1,6 +1,6 @@
 {
   "name": "suggestive-text-field",
-  "version": "0.1.6",
+  "version": "0.1.9",
   "main": "dist/suggestive_text_field.js",
   "homepage": "https://github.com/colorfulfool/Suggestive-text-field",
   "bugs": "https://github.com/colorfulfool/Suggestive-text-field/issues",
