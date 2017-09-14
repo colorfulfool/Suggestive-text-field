@@ -180,7 +180,7 @@
 
 }).call(this);
 (function() {
-  var shiftWithinLimits;
+  var shiftWithinLimits, waitOn;
 
   this.SuggestiveTextField = (function() {
     function SuggestiveTextField(textInput, possibleSuggestions, options1) {
@@ -201,7 +201,12 @@
     };
 
     SuggestiveTextField.prototype.onType = function() {
-      return this.offeredSuggestions = this.matchingSuggestions(this.outmostToken());
+      return waitOn(this.matchingSuggestions(this.outmostToken())).then((function(_this) {
+        return function(matchingSuggestions) {
+          _this.offeredSuggestions = matchingSuggestions;
+          return _this.renderSuggestionsBox();
+        };
+      })(this));
     };
 
     SuggestiveTextField.prototype.onArrow = function(shift) {
@@ -291,8 +296,7 @@
     SuggestiveTextField.prototype.initEventHandlers = function() {
       this.textInput.addEventListener('input', (function(_this) {
         return function() {
-          _this.onType();
-          return _this.renderSuggestionsBox();
+          return _this.onType();
         };
       })(this));
       return this.textInput.addEventListener('keydown', (function(_this) {
@@ -331,6 +335,11 @@
     } else {
       return attemptedValue;
     }
+  };
+
+  waitOn = function(value) {
+    var promise;
+    return promise = value instanceof Promise ? value : Promise.resolve(value);
   };
 
 }).call(this);

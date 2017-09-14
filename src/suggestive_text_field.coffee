@@ -116,6 +116,5 @@ shiftWithinLimits = (initialValue, shift, options) ->
     attemptedValue
 
 waitOn = (value) ->
-  promise = if value instanceof Promise then value \
-    else new Promise((resolve, reject) => resolve(value))
+  promise = if value instanceof Promise then value else Promise.resolve(value)
   
