@@ -6,6 +6,7 @@ class @SuggestionsBox
     @container = createElement(
       "<div></div>", {
         position: 'absolute',
+        zIndex: 9,
         fontFamily: options.styleFrom.style.fontFamily,
         fontSize: options.styleFrom.style.fontSize,
         border: '1px solid #FFB7B2',
