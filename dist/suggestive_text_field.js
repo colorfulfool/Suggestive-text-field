@@ -189,7 +189,7 @@
       this.options = options1 != null ? options1 : {};
       this.defaultOptions({
         tokenSeparator: ', ',
-        startSuggestingAt: 1
+        minTokenLength: 1
       });
       this.initInternalState();
       this.initElements();
@@ -237,7 +237,7 @@
     };
 
     SuggestiveTextField.prototype.matchingSuggestions = function(token) {
-      if (token.length > this.options.startSuggestingAt) {
+      if (token.length > this.options.minTokenLength) {
         return (this.options.suggestionsForToken || this.suggestionsForToken).call(this, token);
       } else {
         return [];

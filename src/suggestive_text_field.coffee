@@ -4,7 +4,7 @@
 
 class @SuggestiveTextField
   constructor: (@textInput, @possibleSuggestions, @options = {}) ->
-    @defaultOptions {tokenSeparator: ', ', startSuggestingAt: 1}
+    @defaultOptions {tokenSeparator: ', ', minTokenLength: 1}
 
     @initInternalState()
     @initElements()
@@ -41,7 +41,7 @@ class @SuggestiveTextField
     @selectedSuggestionIndex = 0
 
   matchingSuggestions: (token) ->
-    if token.length > @options.startSuggestingAt
+    if token.length > @options.minTokenLength
       (@options.suggestionsForToken || @suggestionsForToken).call(this, token)
     else
       []
