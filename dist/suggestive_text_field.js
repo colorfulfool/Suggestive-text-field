@@ -188,7 +188,8 @@
       this.possibleSuggestions = possibleSuggestions;
       this.options = options1 != null ? options1 : {};
       this.defaultOptions({
-        tokenSeparator: ', '
+        tokenSeparator: ', ',
+        startSuggestingAt: 1
       });
       this.initInternalState();
       this.initElements();
@@ -236,10 +237,11 @@
     };
 
     SuggestiveTextField.prototype.matchingSuggestions = function(token) {
-      if (token.length < 1) {
+      if (token.length > this.options.startSuggestingAt) {
+        return (this.options.suggestionsForToken || this.suggestionsForToken).call(this, token);
+      } else {
         return [];
       }
-      return (this.options.suggestionsForToken || this.suggestionsForToken).call(this, token);
     };
 
     SuggestiveTextField.prototype.suggestionsForToken = function(token) {
