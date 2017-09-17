@@ -8,7 +8,7 @@ The most basic autocomplete input on the web. Comes as a single JS file that doe
 
 ![demonstration](http://i64.tinypic.com/j0i8w2.gif)
 
-### Okay, but my autocomplete needs to fetch the suggestions from the web
+### Okay, but my autocomplete needs to fetch the suggestions dynamically
 
 ```coffeescript
 new SuggestiveTextField(textInput, null,
@@ -20,7 +20,7 @@ new SuggestiveTextField(textInput, null,
         
 )
 ```
-More details right below. `remoteJSON` is a jQuery-free replacement for `$.getJSON()` from [a StackOverflow post](https://stackoverflow.com/a/22780569/2156614).
+More details right below. `remoteJSON` is just a jQuery-free replacement for `$.getJSON()` from [a StackOverflow post](https://stackoverflow.com/a/22780569/2156614).
 
 ## Options
 
