@@ -1,4 +1,5 @@
 # Suggestive Text Field
+
 The most basic autocomplete input on the web. Comes as a single JS file that doesn't depend on anything.
 
 ```javascript
@@ -8,7 +9,21 @@ The most basic autocomplete input on the web. Comes as a single JS file that doe
 
 ![demonstration](http://i64.tinypic.com/j0i8w2.gif)
 
-### Options
+### Okay, but my autocomplete needs to fetch the suggestions dynamically
+
+```coffeescript
+new SuggestiveTextField(textInput, null,
+  suggestionsForToken: (token) ->
+  
+    new Promise (resolve, reject) ->
+      remoteJSON "http://api.cdek.ru/city/jsonp.php?name_startsWith=#{token}", (response) ->
+        resolve response.locations.map (location) -> location.cityName
+        
+)
+```
+More details right below. `remoteJSON` is just a jQuery-free replacement for `$.getJSON()` from [here](https://stackoverflow.com/a/22780569/2156614).
+
+## Options
 
 ```javascript
 SuggestiveTextField(textInput, suggestions, {
