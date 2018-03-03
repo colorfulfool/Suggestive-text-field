@@ -15,21 +15,18 @@ new SuggestiveTextField(textInput, null,
   suggestionsForToken: (token) ->
   
     new Promise (resolve, reject) ->
-      remoteJSON "http://api.cdek.ru/city/jsonp.php?name_startsWith=#{token}", (response) ->
-        resolve response.locations.map (location) -> location.cityName
+      $.getJSON remoteUrlFor(token), (response) ->
+        resolve response.results
         
 )
 ```
-More details right below. `remoteJSON` is just a jQuery-free replacement for `$.getJSON()` from [a StackOverflow post](https://stackoverflow.com/a/22780569/2156614).
 
 ## Options
 
 ```javascript
 SuggestiveTextField(textInput, suggestions, {
 
-  tokenSeparator: ', ', // or pass false to disallow multiple selections
-  
-  // Pass your own functions as hooks to alter the behaviour:
+  tokenSeparator: ', ', // pass false to disallow multiple selections whatsoever
   
   suggestionsForToken: function (token) {
     // return suggestions that start with `token`
