@@ -8,16 +8,13 @@ The most basic autocomplete input on the web. Comes as a single JS file that doe
 
 ![demonstration](http://i64.tinypic.com/j0i8w2.gif)
 
-### Okay, but my autocomplete needs to fetch the suggestions dynamically
+### Okay, but my autocomplete needs to fetch suggestions dynamically
 
-```coffeescript
+```js
 new SuggestiveTextField(textInput, null,
-  suggestionsForToken: (token) ->
-  
-    new Promise (resolve, reject) ->
-      $.getJSON remoteUrlFor(token), (response) ->
-        resolve response.results
-        
+  suggestionsForToken: (token) =>
+    new Promise((resolve, reject) => 
+      $.getJSON(remoteUrlFor(token), (response) => resolve(response.results))
 )
 ```
 
